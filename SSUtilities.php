@@ -1,11 +1,13 @@
-<?php
+<?php 
 
-abstract class StackSightBase {
+class SSUtilities {
 
-	const INIT_APP_ENDPOINT_01 = 'https://network.mean.io/api/v0.1/app/init';
-	const EVENTS_ENDPOINT_01 = 'https://network.mean.io/api/v0.1/index/events/events';
+	static function timeJSFormat() {
+		$mct = explode(" ", microtime());
+		return date("Y-m-d\TH:i:s",$mct[1]).substr((string)$mct[0],1,4).'Z';
+	}
 
-	public function error_log($message, $level = 'info') {
+	static function error_log($message, $level = 'info') {
 	    if (!$message) return;
 
 	    $log_file = __DIR__.'/../'.$level.'.log';

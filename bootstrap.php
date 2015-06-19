@@ -1,4 +1,5 @@
 <?php 
 
-require('class-stacksight-base.php');
-require('interface-stacksight.php');
+require('SSClientBase.php');
+require('SSHttpRequest.php');
+require('SSUtilities.php');
