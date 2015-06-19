@@ -35,7 +35,7 @@ abstract class SSClientBase {
 				$this->app = null;
 				$this->saveSettings(null);
 			}
-		} else $response = array('success' => true, 'message' => 'OK', 'data' => $this->app); // app exists
+		} else $response = array('success' => true, 'message' => 'LOADED', 'data' => $this->app); // app exists
 
 		return $response;
 	}
