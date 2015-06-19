@@ -27,7 +27,13 @@ class SSHttpRequest {
 			return array('success' => true, 'message' => 'OK', 'data' => json_decode($response, true));
 		} else {
 			$error = error_get_last();
-			return array('success' => false, 'message' => $error['message']);
+			if ($error) $err_msg = $error['message'];
+			else {
+				if ($platform == 'drupal') $err_msg = t('Can not create an application. Check watchdog for more details.');
+				else $err_msg = 'Can not create an application. Unknown error.';
+			}
+
+			return array('success' => false, 'message' => $err_msg);
 		}
 
 	}
