@@ -21,7 +21,7 @@ class SSHttpRequest {
 			)
 		);
 		$context  = stream_context_create($opts);
-		$response = file_get_contents(self::INIT_APP_ENDPOINT_01, false, $context);
+		$response = @file_get_contents(self::INIT_APP_ENDPOINT_01, false, $context);
 
 		if ($response !== false) {
 			return array('success' => true, 'message' => 'OK', 'data' => json_decode($response, true));
