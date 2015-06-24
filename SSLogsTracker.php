@@ -28,7 +28,7 @@ class SSLogsTracker {
         $error = error_get_last();
 
         if($error && ($error['type'] & E_FATAL)){
-            handler($error['type'], $error['message'], $error['file'], $error['line']);
+            $this->handler($error['type'], $error['message'], $error['file'], $error['line']);
         }
 
     }
