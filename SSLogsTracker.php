@@ -11,16 +11,11 @@ class SSLogsTracker {
 
     private $client;
 
-    public function __construct($app_name, $token, $platform = 'php') {
-        $this->client = new SSPHPClient($token, $platform);
-        $result = $this->client->initApp($app_name);
+    public function __construct($client, $platform = 'php') {
+        $this->client = $client;
 
-        if ($result['success']) {
-            register_shutdown_function(array(&$this, 'shutdown'));
-            set_error_handler(array(&$this, 'handler'));
-        } else {
-            SSUtilities::error_log('SSLogsTracker: ' . $result['message'], 'error');
-        }
+        register_shutdown_function(array(&$this, 'shutdown'));
+        set_error_handler(array(&$this, 'handler'));
     }
 
     //Function to catch no user error handler function errors...
