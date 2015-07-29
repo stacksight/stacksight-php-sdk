@@ -10,6 +10,8 @@ class SSUtilities {
 	static function error_log($message, $level = 'info') {
 	    if (!$message) return;
 
+	    if (is_array($message) || is_object($message)) $message = print_r($message, true);
+
 	    $log_file = __DIR__.'/../'.$level.'.log';
 	    // удалить лог если он превышает $logfile_limit
 	    $logfile_limit = 1024000; // размер лог файла в килобайтах (102400 = 100 мб)
