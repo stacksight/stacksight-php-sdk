@@ -47,7 +47,6 @@ class SSHttpRequest {
 		);
 		$context  = stream_context_create($opts);
 		$response = file_get_contents(self::INDEX_ENDPOINT_01.'/'.$data['index'].'/'.$data['eType'], false, $context);
-		SSUtilities::error_log($response, 'debug');
 
 		if ($response !== false) {
 			return array('success' => true, 'message' => 'OK');
