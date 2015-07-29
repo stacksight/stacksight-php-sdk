@@ -42,7 +42,7 @@ abstract class SSClientBase {
 
 	public function publishEvent($data) {
 		$data['index'] = 'events';
-		$data['type'] = 'events';
+		$data['eType'] = 'event';
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app['_id'];
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
@@ -54,6 +54,7 @@ abstract class SSClientBase {
 	public function sendLog($message, $level = 'log') {
 		$data['index'] = 'logs';
 		$data['type'] = 'console';
+		$data['eType'] = 'log';
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app['_id'];
 		$data['method'] = $level;

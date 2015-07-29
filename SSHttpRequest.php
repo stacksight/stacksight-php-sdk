@@ -2,9 +2,8 @@
 
 class SSHttpRequest {
 
-	const INIT_APP_ENDPOINT_01 = 'https://network.mean.io/api/v0.1/app/init';
-	const EVENTS_ENDPOINT_01 = 'https://network.mean.io/api/v0.1/index/events/events';
-	const LOGS_ENDPOINT_01 = 'https://network.mean.io/api/v0.1/index/logs/console';
+	const INIT_APP_ENDPOINT_01 	= 'https://network.mean.io/api/v0.1/app/init';
+	const INDEX_ENDPOINT_01 	= 'https://network.mean.io/api/v0.1/index';
 
 	public function createApp($name, $token, $platform = 'php') {
 		if (!$name || !$token) return array('success' => false, 'message' => 'Empty name or token');
@@ -47,7 +46,8 @@ class SSHttpRequest {
 			)
 		);
 		$context  = stream_context_create($opts);
-		$response = file_get_contents(self::EVENTS_ENDPOINT_01, false, $context);
+		$response = file_get_contents(self::INDEX_ENDPOINT_01.'/'.$data['index'].'/'.$data['eType'], false, $context);
+		SSUtilities::error_log($response, 'debug');
 
 		if ($response !== false) {
 			return array('success' => true, 'message' => 'OK');
@@ -66,7 +66,7 @@ class SSHttpRequest {
 			)
 		);
 		$context  = stream_context_create($opts);
-		$response = file_get_contents(self::LOGS_ENDPOINT_01, false, $context);
+		$response = file_get_contents(self::INDEX_ENDPOINT_01.'/'.$data['index'].'/'.$data['eType'], false, $context);
 
 		if ($response !== false) {
 			return array('success' => true, 'message' => 'OK');
