@@ -11,11 +11,11 @@ class SSLogsTracker {
 
     private $client;
 
-    public function __construct($client, $platform = 'php') {
+    public function __construct($client, $err_handler = TRUE, $shutdown_function = TRUE) {
         $this->client = $client;
 
-        register_shutdown_function(array(&$this, 'shutdown'));
-        set_error_handler(array(&$this, 'handler'));
+        if ($err_handler) set_error_handler(array(&$this, 'handler'));
+        if ($shutdown_function) register_shutdown_function(array(&$this, 'shutdown'));
     }
 
     //Function to catch no user error handler function errors...
@@ -60,10 +60,16 @@ class SSLogsTracker {
                 $this->client->sendLog('E_STRICT: ' . $message, 'info'); break;
             case E_RECOVERABLE_ERROR: // 4096 //
                 $this->client->sendLog('E_RECOVERABLE_ERROR: ' . $message, 'error'); break;
-            case E_DEPRECATED: // 8192 //
-                $this->client->sendLog('E_DEPRECATED: ' . $message, 'info'); break;
-            case E_USER_DEPRECATED: // 16384 //
-                $this->client->sendLog('E_USER_DEPRECATED: ' . $message, 'info'); break;
+        }
+
+        // E_DEPRECATED and E_USER_DEPRECATED were added in PHP 5.3.0.
+        if (defined('E_DEPRECATED')) {
+            switch ($errno) {
+                case E_DEPRECATED: // 8192 //
+                    $this->client->sendLog('E_DEPRECATED: ' . $message, 'info'); break;
+                case E_USER_DEPRECATED: // 16384 //
+                    $this->client->sendLog('E_USER_DEPRECATED: ' . $message, 'info'); break;
+            }
         }
 
         return false;

@@ -1,7 +1,5 @@
 <?php 
 
-require(__DIR__.'/../bootstrap.php');
-
 class SSDrupalClient extends SSClientBase {
 
 	protected function saveSettings($data) {

@@ -7,5 +7,5 @@ require_once('SSUtilities.php');
 require_once('platforms/SSWordpressClient.php');
 $ss_client = new SSWordpressClient(STACKSIGHT_TOKEN, 'wordpress');
 $ss_client->initApp(STACKSIGHT_APP_ID);
-new SSLogsTracker($ss_client, 'wordpress');
+new SSLogsTracker($ss_client);
 define('STACKSIGHT_BOOTSTRAPED', TRUE);
