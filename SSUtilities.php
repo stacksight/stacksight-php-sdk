@@ -22,4 +22,8 @@ class SSUtilities {
 	    $date_format = $date->format('d.m.Y H:i:s');
 	    error_log($date_format .' '. $message."\n", 3, $log_file);
 	}
+
+	static function t($str, $params = array()) {
+		return str_replace(array_keys($params), $params, $str);
+	}
 }
