@@ -2,7 +2,7 @@
 
 class SSHttpRequest {
 
-	const INDEX_ENDPOINT_01 	= 'https://api.stacksight.io/api/v0.1/index';
+	const INDEX_ENDPOINT_01 	= 'https://api.stacksight.io/v0.1/index';
 
 	public function publishEvent($data) {
 		$opts = array(
