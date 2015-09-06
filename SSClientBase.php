@@ -42,4 +42,13 @@ abstract class SSClientBase {
 		$response = $this->request->sendLog($data);
 		return $response;
 	}
+
+	public function sendUpdates($data) {
+		$data['token'] = $this->token;
+		$data['appId'] = $this->app_id;
+
+		$response = $this->request->sendUpdates($data);
+		return $response;
+	}
+
 }
