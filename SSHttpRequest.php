@@ -55,7 +55,7 @@ class SSHttpRequest {
 		$context  = stream_context_create($opts);
 		$response = file_get_contents(self::INDEX_ENDPOINT_01.'/updates/update', false, $context);
 
-		SSUtilities::error_log($response, 'http_update');
+		// SSUtilities::error_log($response, 'http_update');
 
 		if ($response !== false) {
 			return array('success' => true, 'message' => 'OK');
