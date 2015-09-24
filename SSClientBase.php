@@ -51,4 +51,12 @@ abstract class SSClientBase {
 		return $response;
 	}
 
+	public function sendHealth($data) {
+		$data['token'] = $this->token;
+		$data['appId'] = $this->app_id;
+
+		$response = $this->request->sendHealth($data);
+		return $response;
+	}
+
 }

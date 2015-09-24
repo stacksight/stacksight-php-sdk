@@ -43,12 +43,10 @@ class SSHttpRequest {
 	}
 
 	public function sendUpdates($data) {
-		$time = SSUtilities::timeJSFormat();
 		$opts = array(
 			'http' => array(
 				'method'  => 'POST',
-				'header'  => "Content-type: application/json\r\n".
-							 "x-stacksight-id: $time",
+				'header'  => "Content-type: application/json",
 				'content' => json_encode($data)
 			)
 		);
@@ -56,6 +54,27 @@ class SSHttpRequest {
 		$response = file_get_contents(self::INDEX_ENDPOINT_01.'/updates/update', false, $context);
 
 		SSUtilities::error_log($response, 'http_update');
+
+		if ($response !== false) {
+			return array('success' => true, 'message' => 'OK');
+		} else {
+			$error = error_get_last();
+			return array('success' => false, 'message' => $error['message']);
+		}
+	}
+
+	public function sendHealth($data) {
+		$opts = array(
+			'http' => array(
+				'method'  => 'POST',
+				'header'  => "Content-type: application/json",
+				'content' => json_encode($data)
+			)
+		);
+		$context  = stream_context_create($opts);
+		$response = file_get_contents(self::INDEX_ENDPOINT_01.'/health/health', false, $context);
+
+		SSUtilities::error_log($response, 'http_health');
 
 		if ($response !== false) {
 			return array('success' => true, 'message' => 'OK');
