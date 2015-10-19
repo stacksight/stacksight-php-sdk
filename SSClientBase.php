@@ -25,7 +25,7 @@ abstract class SSClientBase {
 		$data['appId'] = $this->app_id;
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 
-		$response = $this->request->publishEvent($data);
+		$response = $this->request->curlPublishEvent($data);
 		return $response;
 	}
 
@@ -47,7 +47,7 @@ abstract class SSClientBase {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
 
-		$response = $this->request->sendUpdates($data);
+		$response = $this->request->curlSendUpdates($data);
 		return $response;
 	}
 
@@ -55,7 +55,7 @@ abstract class SSClientBase {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
 
-		$response = $this->request->sendHealth($data);
+		$response = $this->request->curlSendHealth($data);
 		return $response;
 	}
 

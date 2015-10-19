@@ -12,8 +12,8 @@ class SSUtilities {
 
 	    if (is_array($message) || is_object($message)) $message = print_r($message, true);
 
-	    $log_file = __DIR__.'/../'.$level.'.log';
-	    // удалить лог если он превышает $logfile_limit
+	    $log_file = dirname(__FILE__).'/../'.$level.'.log';
+	    // delete logfile if filesize more than $logfile_limit
 	    $logfile_limit = 1024000; // размер лог файла в килобайтах (102400 = 100 мб)
 	    if (file_exists($log_file) && filesize($log_file) / 1024 > $logfile_limit) unlink($log_file);
 	    

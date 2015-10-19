@@ -23,6 +23,30 @@ class SSHttpRequest {
 		}
 	}
 
+	public function curlPublishEvent($data) {
+
+		$data_string = json_encode($data);                                                                                   
+                                                                                                                     
+		$ch = curl_init(self::INDEX_ENDPOINT_01.'/'.$data['index'].'/'.$data['eType']);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+    			'Content-Type: application/json',                                                                                
+    			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+                                                                                                                     
+		$response = curl_exec($ch);	
+
+			
+		if ($response !== false) {
+			return array('success' => true, 'message' => 'OK');
+		} else {
+			$error = error_get_last();
+			return array('success' => false, 'message' => $error['message']);
+		}
+	}
+
 	public function sendLog($data) {
 		$opts = array(
 			'http' => array(
@@ -63,6 +87,28 @@ class SSHttpRequest {
 		}
 	}
 
+	public function curlSendUpdates($data) {
+		$data_string = json_encode($data);                                                                                   
+                                                                                                                     
+		$ch = curl_init(self::INDEX_ENDPOINT_01.'/updates/update');
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+    			'Content-Type: application/json',                                                                                
+    			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+                                                                                                                     
+		$response = curl_exec($ch);	
+			
+		if ($response !== false) {
+			return array('success' => true, 'message' => 'OK');
+		} else {
+			$error = error_get_last();
+			return array('success' => false, 'message' => $error['message']);
+		}
+	}
+
 	public function sendHealth($data) {
 		$opts = array(
 			'http' => array(
@@ -84,4 +130,25 @@ class SSHttpRequest {
 		}
 	}
 
+	public function curlSendHealth($data) {
+		$data_string = json_encode($data);                                                                                   
+                                                                                                                     
+		$ch = curl_init(self::INDEX_ENDPOINT_01.'/health/health');
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+    			'Content-Type: application/json',                                                                                
+    			'Content-Length: ' . strlen($data_string))                                                                       
+		);                                                                                                                   
+                                                                                                                     
+		$response = curl_exec($ch);	
+			
+		if ($response !== false) {
+			return array('success' => true, 'message' => 'OK');
+		} else {
+			$error = error_get_last();
+			return array('success' => false, 'message' => $error['message']);
+		}
+	}
 }
