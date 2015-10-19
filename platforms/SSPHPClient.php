@@ -1,7 +1,7 @@
 <?php 
 
-require(__DIR__.'/../bootstrap.php');
-define('APP_SETTINGS_FILE', __DIR__.'/../../app_settings.json');
+require(dirname(__FILE__).'/../bootstrap.php');
+define('APP_SETTINGS_FILE', dirname(__FILE__).'/../../app_settings.json');
 
 class SSPHPClient extends SSClientBase {
 
