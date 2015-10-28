@@ -31,6 +31,8 @@ class SSHttpRequest {
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
                 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+		curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT_MS, 1);
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
     			'Content-Type: application/json',                                                                                
     			'Content-Length: ' . strlen($data_string))                                                                       
