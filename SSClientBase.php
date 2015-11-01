@@ -39,7 +39,7 @@ abstract class SSClientBase {
 		$data['content'] = $message;
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 
-		$response = $this->request->sendLog($data);
+		$response = $this->request->curlPublishEvent($data);
 		return $response;
 	}
 
