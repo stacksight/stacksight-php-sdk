@@ -4,6 +4,10 @@ define('STACKSIGHT_BOOTSTRAPED', TRUE);
 
 require_once('SSClientBase.php');
 require_once('SSHttpRequest.php');
+require_once('requests/SSHttpInterface.php');
+require_once('requests/SSHttpRequestCurl.php');
+require_once('requests/SSHttpRequestSockets.php');
+require_once('requests/SSHttpRequestThread.php');
 require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSDrupalClient.php');

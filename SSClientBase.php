@@ -8,10 +8,24 @@ abstract class SSClientBase {
 	private $platform;
 	private $request;
 
-	public function __construct($token, $platform) {
+	const RT_SOCKET = 'socket';
+	const RT_CURL = 'curl';
+	const RT_THREAD = 'thread';
+
+	public function __construct($token, $platform, $request_type = self::RT_SOCKET) {
 		$this->token = $token;
 		$this->platform = $platform;
-		$this->request = new SSHttpRequest();
+		switch($request_type){
+			case self::RT_SOCKET:
+				$this->request = new SSHttpRequestSockets();
+				break;
+			case self::RT_CURL:
+				$this->request = new SSHttpRequestCurl();
+				break;
+			case self::RT_THREAD:
+				$this->request = new SSHttpRequestThread();
+				break;
+		}
 	}
 
 	public function initApp($app_id) {
@@ -25,7 +39,7 @@ abstract class SSClientBase {
 		$data['appId'] = $this->app_id;
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 
-		$response = $this->request->curlPublishEvent($data);
+		$response = $this->request->publishEvent($data);
 		return $response;
 	}
 
@@ -39,7 +53,7 @@ abstract class SSClientBase {
 		$data['content'] = $message;
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 
-		$response = $this->request->curlPublishEvent($data);
+		$response = $this->request->publishEvent($data);
 		return $response;
 	}
 
@@ -47,7 +61,7 @@ abstract class SSClientBase {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
 
-		$response = $this->request->curlSendUpdates($data);
+		$response = $this->request->sendUpdates($data);
 		return $response;
 	}
 
@@ -55,7 +69,7 @@ abstract class SSClientBase {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
 
-		$response = $this->request->curlSendHealth($data);
+		$response = $this->request->sendHealth($data);
 		return $response;
 	}
 
