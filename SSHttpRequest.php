@@ -3,8 +3,8 @@ class SSHttpRequest {
 
     public $protocol = 'ssl';
     public $hprotocol = 'https';
-    public $host = 'onliner.io';
-    public $api_path = 'test.php';
+    public $host = 'api.stacksight.io';
+    public $api_path = 'v0.1/index';
     public $port = 443;
 
     public function __construct(){
