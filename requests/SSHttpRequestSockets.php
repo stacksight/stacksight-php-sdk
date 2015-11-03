@@ -6,8 +6,22 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
     private $_socket;
 
     public function __construct(){
+        $this->createSocket();
+    }
+
+    public function __destruct(){
+        $this->closeSocket();
+    }
+
+    private function createSocket(){
+        $flags = STREAM_CLIENT_ASYNC_CONNECT;
         if(!$this->_socket)
-            $this->_socket = @pfsockopen($this->protocol . "://" . $this->host, $this->port, $errno, $errstr, $this->timeout);
+            $this->_socket = stream_socket_client($this->protocol . "://" . $this->host. ':' . $this->port, $errno, $errstr, $this->timeout, $flags);
+        stream_set_blocking($this->_socket, false);
+    }
+
+    private function closeSocket(){
+        fclose($this->_socket);
     }
 
     public function sendRequest($data, $url = false){
@@ -23,23 +37,6 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
         $req.= "Content-length: " . strlen($content) . "\r\n";
         $req.= "\r\n";
         $req.= $content;
-
-        $bytes_written = 0;
-        $bytes_total = strlen($req);
-        $closed = false;
-
-        while (!$closed && $bytes_written < $bytes_total) {
-            try {
-                $written = @fwrite($this->_socket, substr($req, $bytes_written));
-            } catch (Exception $e) {
-                $this->handleError($e->getCode(), $e->getMessage());
-                $closed = true;
-            }
-            if (!isset($written) || !$written) {
-                $closed = true;
-            } else {
-                $bytes_written += $written;
-            }
-        }
+        fwrite($this->_socket, $req);
     }
 }

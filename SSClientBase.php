@@ -12,7 +12,7 @@ abstract class SSClientBase {
 	const RT_CURL = 'curl';
 	const RT_THREAD = 'thread';
 
-	public function __construct($token, $platform, $request_type = self::RT_CURL) {
+	public function __construct($token, $platform, $request_type = self::RT_SOCKET) {
 		$this->token = $token;
 		$this->platform = $platform;
 		switch($request_type){
