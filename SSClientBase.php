@@ -6,26 +6,16 @@ abstract class SSClientBase {
 	private $token;
 	private $app_saved;
 	private $platform;
-	private $request;
+	private $request_curl;
+	private $request_socket;
+	private $request_thread;
 
-	const RT_SOCKET = 'socket';
-	const RT_CURL = 'curl';
-	const RT_THREAD = 'thread';
-
-	public function __construct($token, $platform, $request_type = self::RT_SOCKET) {
+	public function __construct($token, $platform) {
 		$this->token = $token;
 		$this->platform = $platform;
-		switch($request_type){
-			case self::RT_SOCKET:
-				$this->request = new SSHttpRequestSockets();
-				break;
-			case self::RT_CURL:
-				$this->request = new SSHttpRequestCurl();
-				break;
-			case self::RT_THREAD:
-				$this->request = new SSHttpRequestThread();
-				break;
-		}
+		$this->request_curl = new SSHttpRequestCurl();
+		$this->request_socket = new SSHttpRequestSockets();
+		$this->request_thread = new SSHttpRequestThread();
 	}
 
 	public function initApp($app_id) {
@@ -39,7 +29,7 @@ abstract class SSClientBase {
 		$data['appId'] = $this->app_id;
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 
-		$response = $this->request->publishEvent($data);
+		$response = $this->request_socket->publishEvent($data);
 		return $response;
 	}
 
@@ -53,7 +43,7 @@ abstract class SSClientBase {
 		$data['content'] = $message;
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 
-		$response = $this->request->publishEvent($data);
+		$response = $this->request_socket->publishEvent($data);
 		return $response;
 	}
 
@@ -61,7 +51,7 @@ abstract class SSClientBase {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
 
-		$response = $this->request->sendUpdates($data);
+		$response = $this->request_socket->sendUpdates($data);
 		return $response;
 	}
 
@@ -69,7 +59,7 @@ abstract class SSClientBase {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
 
-		$response = $this->request->sendHealth($data);
+		$response = $this->request_curl->sendHealth($data);
 		return $response;
 	}
 

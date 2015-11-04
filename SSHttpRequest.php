@@ -8,7 +8,8 @@ class SSHttpRequest {
     public $port = 443;
 
     public function __construct(){
-        define(INDEX_ENDPOINT_01, $this->hprotocol.'://'.$this->host.'/'.$this->api_path);
+        if(!defined(INDEX_ENDPOINT_01))
+            define(INDEX_ENDPOINT_01, $this->hprotocol.'://'.$this->host.'/'.$this->api_path);
     }
 
     public function publishEvent($data) {
@@ -24,7 +25,7 @@ class SSHttpRequest {
     }
 
     public function sendHealth($data) {
-        $this->sendRequest($data, '/health/health');
+        $this->sendRequest($data, '/health/security');
     }
 
 }
