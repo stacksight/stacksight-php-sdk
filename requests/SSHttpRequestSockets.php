@@ -27,8 +27,10 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
     public function sendRequest($data, $url = false){
         if($url === false)
             $url = $this->api_path.'/'.$data['index'].'/'.$data['eType'];
-        $content = json_encode($data);
+        else
+            $url = $this->api_path.$url;
 
+        $content = json_encode($data);
         $req = "";
         $req.= "POST /$url HTTP/1.1\r\n";
         $req.= "Host: " . $this->host . "\r\n";
