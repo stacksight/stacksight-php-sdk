@@ -25,7 +25,7 @@ class SSHttpRequest {
     }
 
     public function sendHealth($data) {
-        $this->sendRequest($data, '/health/security');
+        $this->sendRequest($data, '/health/health');
     }
 
 }
