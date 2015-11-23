@@ -52,8 +52,13 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
                 }
             }
             if($sended === false){
-                $cURL = new SSHttpRequestCurl();
-                $cURL->sendRequest($data, $url);
+                $this->closeSocket();
+                usleep(200000);
+                $this->createSocket();
+                if(!fwrite($this->_socket, $req)){
+                    $cURL = new SSHttpRequestCurl();
+                    $cURL->sendRequest($data, $url);
+                }
             }
         }
     }
