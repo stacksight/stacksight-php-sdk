@@ -5,6 +5,8 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
     public $timeout = 10;
     private $_socket;
 
+    public $max_retry = 1;
+    
     public function __construct(){
         $this->createSocket();
     }
@@ -39,6 +41,20 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
         $req.= "Content-length: " . strlen($content) . "\r\n";
         $req.= "\r\n";
         $req.= $content;
-        fwrite($this->_socket, $req);
+
+        if(!fwrite($this->_socket, $req)){
+            $sended = false;
+            for($i = 0; $i <= $this->max_retry; $i++){
+                usleep(200000);
+                if(fwrite($this->_socket, $req)){
+                    $sended = true;
+                    break;
+                }
+            }
+            if($sended === false){
+                $cURL = new SSHttpRequestCurl();
+                $cURL->sendRequest($data, $url);
+            }
+        }
     }
 }
