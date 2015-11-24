@@ -10,6 +10,8 @@ abstract class SSClientBase {
 	private $request_socket;
 	private $request_thread;
 
+	private $socket_limit = 4096;
+
 	public function __construct($token, $platform) {
 		$this->token = $token;
 		$this->platform = $platform;
@@ -28,8 +30,10 @@ abstract class SSClientBase {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
-
-		$response = $this->request_socket->publishEvent($data);
+		if (strlen(json_encode($data)) > $this->socket_limit)
+			$response = $this->request_curl->publishEvent($data);
+		else
+			$response = $this->request_socket->publishEvent($data);
 		return $response;
 	}
 
@@ -42,24 +46,30 @@ abstract class SSClientBase {
 		$data['method'] = $level;
 		$data['content'] = $message;
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
-
-		$response = $this->request_socket->publishEvent($data);
+		if (strlen(json_encode($data)) > $this->socket_limit)
+			$response = $this->request_curl->publishEvent($data);
+		else
+			$response = $this->request_socket->publishEvent($data);
 		return $response;
 	}
 
 	public function sendUpdates($data) {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
-
-		$response = $this->request_socket->sendUpdates($data);
+		if (strlen(json_encode($data)) > $this->socket_limit)
+			$response = $this->request_curl->sendUpdates($data);
+		else
+			$response = $this->request_socket->sendUpdates($data);
 		return $response;
 	}
 
 	public function sendHealth($data) {
 		$data['token'] = $this->token;
 		$data['appId'] = $this->app_id;
-
-		$response = $this->request_curl->sendHealth($data);
+		if (strlen(json_encode($data)) > $this->socket_limit)
+			$response = $this->request_curl->sendHealth($data);
+		else
+			$response = $this->request_socket->sendHealth($data);
 		return $response;
 	}
 
