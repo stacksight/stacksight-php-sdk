@@ -2,7 +2,6 @@
 
 abstract class SSClientBase {
 
-	private $app_id;
 	private $token;
 	private $app_saved;
 	private $platform;
@@ -21,10 +20,6 @@ abstract class SSClientBase {
 		$this->request_curl = new SSHttpRequestCurl();
 		$this->request_socket = new SSHttpRequestSockets();
 		$this->request_thread = new SSHttpRequestThread();
-	}
-
-	public function initApp($app_id) {
-		$this->app_id = $app_id;
 	}
 
 	public function publishEvent($data) {
