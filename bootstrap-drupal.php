@@ -1,7 +1,5 @@
 <?php 
 
-define('STACKSIGHT_BOOTSTRAPED', TRUE);
-
 require_once('SSClientBase.php');
 require_once('SSHttpRequest.php');
 require_once('requests/SSHttpInterface.php');
