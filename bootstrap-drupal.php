@@ -12,7 +12,10 @@ require_once('platforms/SSDrupalClient.php');
 
 global $ss_client;
 if(defined('STACKSIGHT_TOKEN')){
-    $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL);
+    if(defined('STACKSIGHT_APP_ID'))
+        $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
+    else
+        $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL);
     $handle_errors = FALSE;
     $handle_fatal_errors = TRUE;
     new SSLogsTracker($ss_client, $handle_errors, $handle_fatal_errors);

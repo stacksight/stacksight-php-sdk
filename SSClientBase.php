@@ -2,8 +2,8 @@
 
 abstract class SSClientBase {
 
+	private $_app_id = false;
 	private $token;
-	private $app_saved;
 	private $_platform;
 	private $request_curl;
 	private $request_socket;
@@ -21,8 +21,10 @@ abstract class SSClientBase {
 	const PLATFORM_NODEJS = 'nodejs';
 	const PLATFORM_PHP = 'php';
 
-	public function __construct($token, $platform) {
+	public function __construct($token, $platform, $app_id = false) {
 		$this->token = $token;
+		if($app_id)
+			$this->_app_id = $app_id;
 
 		switch($platform){
 			case self::PLATFORM_MEAN:
@@ -99,11 +101,17 @@ abstract class SSClientBase {
 	}
 
 	private function _setAppParams(&$data = array()){
+
+		if($this->_app_id){
+			$data['appId'] = $this->_app_id;
+		} else {
+			$data['domain'] = $_SERVER["SERVER_NAME"];
+			$data['platform'] = $this->_platform;
+		}
+
 		if(getenv('PLATFORM_ENVIRONMENT')){
 			$data['group'] = self::GROUP_PLATFORM_SH;
 		}
-		$data['domain'] = $_SERVER["SERVER_NAME"];
-		$data['platform'] = $this->_platform;
 		$data['token'] = $this->token;
 	}
 
