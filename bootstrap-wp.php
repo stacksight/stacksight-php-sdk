@@ -10,7 +10,7 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSWordpressClient.php');
 if(defined('STACKSIGHT_TOKEN')){
-	$ss_client = new SSWordpressClient(STACKSIGHT_TOKEN, 'wordpress');
+	$ss_client = new SSWordpressClient(STACKSIGHT_TOKEN, SSWordpressClient::PLATFORM_WORDPRESS);
 	new SSLogsTracker($ss_client);
 	define('STACKSIGHT_BOOTSTRAPED', TRUE);
 }

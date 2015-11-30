@@ -4,7 +4,7 @@ abstract class SSClientBase {
 
 	private $token;
 	private $app_saved;
-	private $platform;
+	private $_platform;
 	private $request_curl;
 	private $request_socket;
 	private $request_thread;
@@ -14,9 +14,40 @@ abstract class SSClientBase {
 	const GROUP_PLATFORM_SH = 'platform';
 	const GROUP_HEROKU = 'heroku';
 
+	const PLATFORM_MEAN = 'mean';
+	const PLATFORM_DRUPAL = 'drupal';
+	const PLATFORM_WORDPRESS = 'wordpress';
+	const PLATFORM_METEOR = 'meteor';
+	const PLATFORM_NODEJS = 'nodejs';
+	const PLATFORM_PHP = 'php';
+
 	public function __construct($token, $platform) {
 		$this->token = $token;
-		$this->platform = $platform;
+
+		switch($platform){
+			case self::PLATFORM_MEAN:
+				$this->_platform = self::PLATFORM_MEAN;
+				break;
+			case self::PLATFORM_DRUPAL:
+				$this->_platform = self::PLATFORM_DRUPAL;
+				break;
+			case self::PLATFORM_WORDPRESS:
+				$this->_platform = self::PLATFORM_WORDPRESS;
+				break;
+			case self::PLATFORM_METEOR:
+				$this->_platform = self::PLATFORM_METEOR;
+				break;
+			case self::PLATFORM_NODEJS:
+				$this->_platform = self::PLATFORM_NODEJS;
+				break;
+			case self::PLATFORM_PHP:
+				$this->_platform = self::PLATFORM_PHP;
+				break;
+			default:
+				$this->_platform = self::PLATFORM_MEAN;
+				break;
+		}
+
 		$this->request_curl = new SSHttpRequestCurl();
 		$this->request_socket = new SSHttpRequestSockets();
 		$this->request_thread = new SSHttpRequestThread();
@@ -72,6 +103,7 @@ abstract class SSClientBase {
 			$data['group'] = self::GROUP_PLATFORM_SH;
 		}
 		$data['domain'] = $_SERVER["SERVER_NAME"];
+		$data['platform'] = $this->_platform;
 		$data['token'] = $this->token;
 	}
 

@@ -14,7 +14,7 @@ require_once('platforms/SSDrupalClient.php');
 
 global $ss_client;
 if(defined('STACKSIGHT_TOKEN')){
-    $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, 'drupal');
+    $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSWordpressClient::PLATFORM_DRUPAL);
     $handle_errors = FALSE;
     $handle_fatal_errors = TRUE;
     new SSLogsTracker($ss_client, $handle_errors, $handle_fatal_errors);
