@@ -105,7 +105,7 @@ abstract class SSClientBase {
 		if($this->_app_id){
 			$data['appId'] = $this->_app_id;
 		} else {
-			$data['domain'] = $_SERVER["SERVER_NAME"];
+			$data['domain'] = $_SERVER['HTTP_HOST'];
 			$data['platform'] = $this->_platform;
 		}
 
