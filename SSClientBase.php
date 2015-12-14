@@ -5,6 +5,7 @@ abstract class SSClientBase {
 	private $_app_id = false;
 	private $token;
 	private $_platform;
+	private $_group = false;
 	private $request_curl;
 	private $request_socket;
 	private $request_thread;
@@ -21,10 +22,13 @@ abstract class SSClientBase {
 	const PLATFORM_NODEJS = 'nodejs';
 	const PLATFORM_PHP = 'php';
 
-	public function __construct($token, $platform, $app_id = false) {
+	public function __construct($token, $platform, $app_id = false, $group = false) {
 		$this->token = $token;
 		if($app_id)
 			$this->_app_id = $app_id;
+
+		if($group)
+			$this->_group = $group;
 
 		switch($platform){
 			case self::PLATFORM_MEAN:
@@ -76,9 +80,9 @@ abstract class SSClientBase {
 		$this->_setAppParams($data);
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 		if (strlen(json_encode($data)) > $this->socket_limit)
-			$response = $this->request_curl->publishEvent($data);
+			$response = $this->request_curl->sendLog($data);
 		else
-			$response = $this->request_socket->publishEvent($data);
+			$response = $this->request_socket->sendLog($data);
 		return $response;
 	}
 
@@ -112,6 +116,15 @@ abstract class SSClientBase {
 		if(getenv('PLATFORM_ENVIRONMENT')){
 			$data['group'] = self::GROUP_PLATFORM_SH;
 		}
+
+		if(defined('STACKSIGHT_GROUP')){
+			$data['group'] = STACKSIGHT_GROUP;
+		}
+
+		if($this->_group){
+			$data['group'] = $this->_group;
+		}
+
 		$data['token'] = $this->token;
 	}
 

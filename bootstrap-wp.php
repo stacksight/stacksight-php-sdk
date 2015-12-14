@@ -10,10 +10,9 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSWordpressClient.php');
 if(defined('STACKSIGHT_TOKEN')){
-	if(defined('STACKSIGHT_APP_ID'))
-		$ss_client = new SSWordpressClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
-	else
-		$ss_client = new SSWordpressClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_WORDPRESS);
+	$app_id = (defined('STACKSIGHT_APP_ID')) ? STACKSIGHT_APP_ID : false;
+	$group = (defined('STACKSIGHT_GROUP')) ? STACKSIGHT_GROUP : false;
+	$ss_client = new SSWordpressClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_WORDPRESS, $app_id, $group);
 	new SSLogsTracker($ss_client);
 	define('STACKSIGHT_BOOTSTRAPED', TRUE);
 }
