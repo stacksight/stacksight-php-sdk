@@ -104,6 +104,15 @@ abstract class SSClientBase {
 		return $response;
 	}
 
+	public function sendInventory($data) {
+		$this->_setAppParams($data);
+		if (strlen(json_encode($data)) > $this->socket_limit)
+			$response = $this->request_curl->sendInventory($data);
+		else
+			$response = $this->request_socket->sendInventory($data);
+		return $response;
+	}
+
 	private function _setAppParams(&$data = array()){
 
 		if($this->_app_id){

@@ -9,6 +9,11 @@ require_once('requests/SSHttpRequestThread.php');
 require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSWordpressClient.php');
+
+if ( ! function_exists( 'get_plugins' ) ) {
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
+}
+
 if(defined('STACKSIGHT_TOKEN')){
 	$app_id = (defined('STACKSIGHT_APP_ID')) ? STACKSIGHT_APP_ID : false;
 	$group = (defined('STACKSIGHT_GROUP')) ? STACKSIGHT_GROUP : false;
@@ -16,3 +21,4 @@ if(defined('STACKSIGHT_TOKEN')){
 	new SSLogsTracker($ss_client);
 	define('STACKSIGHT_BOOTSTRAPED', TRUE);
 }
+

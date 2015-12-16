@@ -28,4 +28,8 @@ class SSHttpRequest {
         $this->sendRequest($data, '/health/health');
     }
 
+    public function sendInventory($data){
+        $this->sendRequest($data, '/inventory/inventory');
+    }
+
 }
