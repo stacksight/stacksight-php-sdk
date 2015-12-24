@@ -7,6 +7,10 @@ class SSHttpRequest {
     public $api_path = 'v0.1/index';
     public $port = 443;
 
+    const UPDATE_URL = '/updates/update';
+    const HEALTH_URL = '/health/health';
+    const INVENTORY_URL = '/inventory/inventory';
+
     public function __construct(){
         if(!defined('INDEX_ENDPOINT_01'))
             define('INDEX_ENDPOINT_01', $this->hprotocol.'://'.$this->host.'/'.$this->api_path);
@@ -21,15 +25,15 @@ class SSHttpRequest {
     }
 
     public function sendUpdates($data) {
-        $this->sendRequest($data, '/updates/update');
+        $this->sendRequest($data, self::UPDATE_URL);
     }
 
     public function sendHealth($data) {
-        $this->sendRequest($data, '/health/health');
+        $this->sendRequest($data, self::HEALTH_URL);
     }
 
     public function sendInventory($data){
-        $this->sendRequest($data, '/inventory/inventory');
+        $this->sendRequest($data, self::INVENTORY_URL);
     }
 
 }
