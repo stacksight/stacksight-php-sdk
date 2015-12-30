@@ -19,7 +19,9 @@ if(defined('STACKSIGHT_TOKEN')){
 	$app_id = (defined('STACKSIGHT_APP_ID')) ? STACKSIGHT_APP_ID : false;
 	$group = (defined('STACKSIGHT_GROUP')) ? STACKSIGHT_GROUP : false;
 	$ss_client = new SSWordpressClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_WORDPRESS, $app_id, $group);
-	new SSLogsTracker($ss_client);
+	if(!defined('STACKSIGHT_INCLUDE_LOGS') || (defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS === true)) {
+		new SSLogsTracker($ss_client);
+	}
 	define('STACKSIGHT_BOOTSTRAPED', TRUE);
 }
 
