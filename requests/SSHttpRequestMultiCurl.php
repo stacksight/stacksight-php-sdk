@@ -37,18 +37,25 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
                 curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
                 curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 10);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                        'Content-Type: application/json',
+                        'Content-Length: ' . strlen($data_string))
+                );
                 curl_multi_add_handle($mh, $ch);
                 $handles[] = $ch;
             }
-            $running = null;
+            $active = null;
             do {
-                curl_multi_exec($mh, $running);
-                usleep(250000);
-            } while ($running > 0);
+                $mrc = curl_multi_exec($mh, $active);
+            } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+            while ($active && $mrc == CURLM_OK) {
+                if (curl_multi_select($mh) != -1) {
+                    do {
+                        $mrc = curl_multi_exec($mh, $active);
+                    } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+                }
+            }
             for ($i = 0; $i < count($handles); $i++) {
-                // get the content of the handle
-                $output .= curl_multi_getcontent($handles[$i]);
-                // remove the handle from the multi handle
                 curl_multi_remove_handle($mh, $handles[$i]);
             }
             curl_multi_close($mh);
