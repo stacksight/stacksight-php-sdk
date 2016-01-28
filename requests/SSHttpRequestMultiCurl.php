@@ -1,5 +1,4 @@
 <?php
-
 class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
 {
 
@@ -49,6 +48,7 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
                 $mrc = curl_multi_exec($mh, $active);
             } while ($mrc == CURLM_CALL_MULTI_PERFORM);
             while ($active && $mrc == CURLM_OK) {
+                while (curl_multi_exec($mh, $active) === CURLM_CALL_MULTI_PERFORM);
                 if (curl_multi_select($mh) != -1) {
                     do {
                         $mrc = curl_multi_exec($mh, $active);
