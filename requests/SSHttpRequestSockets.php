@@ -19,9 +19,11 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
         $this->closeSocket();
     }
 
-    private function createSocket(){
+    public function createSocket($recreate = false){
         $flags = STREAM_CLIENT_ASYNC_CONNECT;
-        if(!$this->_socket){
+        if(!$this->_socket || $recreate === true){
+            print_r($this->host.' === '.$this->port."\r\n");
+
             if($this->_socket = @stream_socket_client($this->protocol . "://" . $this->host. ':' . $this->port, $errno, $errstr, $this->timeout, $flags)){
                 stream_set_blocking($this->_socket, false);
                 $this->_state_socket = true;
@@ -41,14 +43,15 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
             fclose($this->_socket);
     }
 
-    public function sendRequest($data, $url = false){
+    public function sendRequest($data, $url = null){
         if($this->_state_socket === true){
-            if($url === false)
+            if($url === null)
                 $url = $this->api_path.'/'.$data['index'].'/'.$data['eType'];
             else
                 $url = $this->api_path.$url;
 
             $content = json_encode($data);
+
             $req = "";
             $req.= "POST /$url HTTP/1.1\r\n";
             $req.= "Host: " . $this->host . "\r\n";

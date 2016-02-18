@@ -24,6 +24,9 @@ abstract class SSClientBase {
 
 	private $curl_obj = array();
 
+	public $stacksight_bot_name = 'Stacksight BOT';
+	public $stacksight_bot_ico = 'https://s3-us-west-2.amazonaws.com/slack-files2/avatars/2015-08-26/9685505874_5c499cefd86aa883b7f4_68.jpg';
+
 	public function __construct($token, $platform, $app_id = false, $group = false) {
 		$this->token = $token;
 		if($app_id)
@@ -101,6 +104,41 @@ abstract class SSClientBase {
 				'url' => false
 			);
 		}
+	}
+
+	public function sendSlackNotify($message, $type){
+		$color = false;
+		switch($type){
+			case 'error':
+				$pretext = "Error";
+				$color = 'danger';
+				break;
+			case 'warn':
+				$pretext = "Warning";
+				$color = 'warning';
+				break;
+			default:
+				$pretext = "Info";
+				$color = '#28D7E5';
+				break;
+		}
+
+		$data = array(
+			"attachments" => array(
+				array(
+					"pretext" => SSUtilities::currentPageURL(),
+//					"author_name" => $this->stacksight_bot_name,
+//					"author_icon" => $this->stacksight_bot_ico,
+					"text" => $message,
+					"title" => $pretext,
+					"color" => $color
+				)
+			)
+		);
+		if (strlen(json_encode($data)) > $this->socket_limit)
+			$response = $this->request_curl->sendSlackNotify($data);
+		else
+			$response = $this->request_socket->sendSlackNotify($data);
 	}
 
 	public function sendUpdates($data, $isMulticURL = false) {

@@ -24,6 +24,14 @@ class SSHttpRequest {
         $this->sendRequest($data);
     }
 
+    public function sendSlackNotify($data) {
+        $incoming_url = parse_url(STACKSIGHT_INCOMING_SLACK_URL);
+        $this->host = $incoming_url['host'];
+        $this->api_path = ltrim($incoming_url['path'], '/');
+        $this->createSocket(true);
+        $this->sendRequest($data, false);
+    }
+
     public function sendUpdates($data) {
         $this->sendRequest($data, self::UPDATE_URL);
     }
