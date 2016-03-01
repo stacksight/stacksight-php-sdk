@@ -19,7 +19,7 @@ if(defined('STACKSIGHT_TOKEN')){
         $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL);
     $handle_errors = FALSE;
     $handle_fatal_errors = TRUE;
-    if(!defined('STACKSIGHT_INCLUDE_LOGS') || (defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS === true)){
+    if(defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS === true){
         new SSLogsTracker($ss_client, $handle_errors, $handle_fatal_errors);
     }
     define('STACKSIGHT_BOOTSTRAPED', TRUE);
