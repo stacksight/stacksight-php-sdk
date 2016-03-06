@@ -3,7 +3,9 @@
 class SSHttpRequestCurl extends SSHttpRequest implements SShttpInterface {
     public function sendRequest($data, $url = false){
         $data_string = json_encode($data);
-        $ch = ($url) ? curl_init(INDEX_ENDPOINT_01.$url) : curl_init(INDEX_ENDPOINT_01.'/'.$data['index'].'/'.$data['eType']);
+        $total_url = ($url) ? INDEX_ENDPOINT_01.$url : INDEX_ENDPOINT_01.'/'.$data['index'].'/'.$data['eType'];
+        $ch = curl_init($total_url);
+
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);

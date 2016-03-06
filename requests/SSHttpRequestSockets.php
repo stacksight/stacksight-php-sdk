@@ -33,7 +33,6 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
                 );
             }
         }
-
     }
 
     private function closeSocket(){
@@ -59,11 +58,12 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
             $req.= "\r\n";
             $req.= $content;
 
-            if(!fwrite($this->_socket, $req)){
+            if(!@fwrite($this->_socket, $req)){
                 $sended = false;
                 for($i = 0; $i <= $this->max_retry; $i++){
                     usleep(200000);
-                    if(fwrite($this->_socket, $req)){
+                    if(@fwrite($this->_socket, $req)){
+                        SSUtilities::error_log("Error fwrire socket. Tried $i timeы...", 'error_socket_connection');
                         $sended = true;
                         break;
                     }
@@ -72,9 +72,10 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
                     $this->closeSocket();
                     usleep(200000);
                     $this->createSocket();
-                    if(!fwrite($this->_socket, $req)){
+                    if(!@fwrite($this->_socket, $req)){
+                        SSUtilities::error_log("Error fwrire socket after sleep.", 'error_socket_connection');
                         $cURL = new SSHttpRequestCurl();
-                        $cURL->sendRequest($data, $url);
+                        $cURL->sendRequest($data);
                     }
                 }
             }
