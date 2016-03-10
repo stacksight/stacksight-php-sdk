@@ -63,7 +63,7 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
                 for($i = 0; $i <= $this->max_retry; $i++){
                     usleep(200000);
                     if(@fwrite($this->_socket, $req)){
-                        SSUtilities::error_log("Error fwrire socket. Tried $i timeы...", 'error_socket_connection');
+                        SSUtilities::error_log("Error fwrire socket. Tried $i times...", 'error_socket_connection');
                         $sended = true;
                         break;
                     }
