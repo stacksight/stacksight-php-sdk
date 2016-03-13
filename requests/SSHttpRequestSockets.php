@@ -10,10 +10,6 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
     private $_state_socket = false;
 
     private $_socket_error = array();
-    
-    public function __construct(){
-        $this->createSocket();
-    }
 
     public function __destruct(){
         $this->closeSocket();
@@ -41,6 +37,9 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
     }
 
     public function sendRequest($data, $url = null){
+        if(!$this->_state_socket){
+            $this->createSocket();
+        }
         if($this->_state_socket === true){
             if($url === null)
                 $url = $this->api_path.'/'.$data['index'].'/'.$data['eType'];
