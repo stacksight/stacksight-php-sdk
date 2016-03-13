@@ -32,34 +32,59 @@ class SSLogsTracker {
         if(!($errno & ERROR_REPORTING)) return;
 
         $message = $errstr.' in '.$errfile.' on line '.$errline;
-
         switch ($errno) {
             case E_ERROR: // 1 //
-                $this->client->sendLog('E_ERROR: ' . $message, 'error'); break;
+                $this->client->sendLog('E_ERROR: ' . $message, 'error');
+                $this->_sendSlackMessage($message, 'error');
+                break;
             case E_WARNING: // 2 //
-                $this->client->sendLog('E_WARNING: ' . $message, 'warn'); break;
+                $this->client->sendLog('E_WARNING: ' . $message, 'warn');
+                $this->_sendSlackMessage($message, 'warn');
+                break;
             case E_PARSE: // 4 //
-                $this->client->sendLog('E_PARSE: ' . $message, 'error'); break;
+                $this->client->sendLog('E_PARSE: ' . $message, 'error');
+                $this->_sendSlackMessage($message, 'error');
+                break;
             case E_NOTICE: // 8 //
-                $this->client->sendLog('E_NOTICE: ' . $message, 'info'); break;
+                $this->client->sendLog('E_NOTICE: ' . $message, 'info');
+                $this->_sendSlackMessage($message, 'info');
+                break;
             case E_CORE_ERROR: // 16 //
-                $this->client->sendLog('E_CORE_ERROR: ' . $message, 'error'); break;
+                $this->client->sendLog('E_CORE_ERROR: ' . $message, 'error');
+                $this->_sendSlackMessage($message, 'error');
+                break;
             case E_CORE_WARNING: // 32 //
-                $this->client->sendLog('E_CORE_WARNING: ' . $message, 'warn'); break;
+                $this->client->sendLog('E_CORE_WARNING: ' . $message, 'warn');
+                $this->_sendSlackMessage($message, 'warn');
+                break;
             case E_COMPILE_ERROR: // 64 //
-                $this->client->sendLog('E_COMPILE_ERROR: ' . $message, 'error'); break;
+                $this->client->sendLog('E_COMPILE_ERROR: ' . $message, 'error');
+                $this->_sendSlackMessage($message, 'error');
+                break;
             case E_COMPILE_WARNING: // 128 //
-                $this->client->sendLog('E_COMPILE_WARNING: ' . $message, 'warn'); break;
+                $this->client->sendLog('E_COMPILE_WARNING: ' . $message, 'warn');
+                $this->_sendSlackMessage($message, 'warn');
+                break;
             case E_USER_ERROR: // 256 //
-                $this->client->sendLog('E_USER_ERROR: ' . $message, 'error'); break;
+                $this->client->sendLog('E_USER_ERROR: ' . $message, 'error');
+                $this->_sendSlackMessage($message, 'error');
+                break;
             case E_USER_WARNING: // 512 //
-                $this->client->sendLog('E_USER_WARNING: ' . $message, 'warn'); break;
+                $this->client->sendLog('E_USER_WARNING: ' . $message, 'warn');
+                $this->_sendSlackMessage($message, 'warn');
+                break;
             case E_USER_NOTICE: // 1024 //
-                $this->client->sendLog('E_USER_NOTICE: ' . $message, 'info'); break;
+                $this->client->sendLog('E_USER_NOTICE: ' . $message, 'info');
+                $this->_sendSlackMessage($message, 'info');
+                break;
             case E_STRICT: // 2048 //
-                $this->client->sendLog('E_STRICT: ' . $message, 'info'); break;
+                $this->client->sendLog('E_STRICT: ' . $message, 'info');
+                $this->_sendSlackMessage($message, 'info');
+                break;
             case E_RECOVERABLE_ERROR: // 4096 //
-                $this->client->sendLog('E_RECOVERABLE_ERROR: ' . $message, 'error'); break;
+                $this->client->sendLog('E_RECOVERABLE_ERROR: ' . $message, 'error');
+                $this->_sendSlackMessage($message, 'error');
+                break;
         }
 
         // E_DEPRECATED and E_USER_DEPRECATED were added in PHP 5.3.0.
@@ -72,6 +97,17 @@ class SSLogsTracker {
             }
         }
 
+
+
         return false;
+    }
+
+    private function _sendSlackMessage($message, $type){
+        if((defined('STACKSIGHT_INCOMING_SLACK_URL') && defined('STACKSIGHT_SEND_TO_SLACK_EVENTS'))){
+            $types = unserialize(STACKSIGHT_SEND_TO_SLACK_EVENTS);
+            if(in_array($type, $types)){
+                $this->client->sendSlackNotify($message, $type);
+            }
+        }
     }
 }
