@@ -17,7 +17,7 @@ if ( ! function_exists( 'get_plugins' ) ) {
 
 class WPBootstrap{
 
-	public $options = array('stacksight_opt', 'stacksight_opt_slack');
+	public $options = array('stacksight_opt', 'stacksight_opt_features');
 
 	private $multisite = false;
 	private $blog_id = false;
@@ -71,47 +71,44 @@ class WPBootstrap{
 											define('STACKSIGHT_GROUP', $option);
 										}
 										break;
-									case 'enable_options':
-										if(is_array($option)){
-											if(in_array(self::CONST_ENABLE_LOGS, $option) && !defined('STACKSIGHT_INCLUDE_LOGS')){
-												define('STACKSIGHT_INCLUDE_LOGS', true);
-											}
-											if(in_array(self::CONST_ENABLE_INVENTORY, $option) && !defined('STACKSIGHT_INCLUDE_INVENTORY')){
-												define('STACKSIGHT_INCLUDE_INVENTORY', true);
-											}
-											if(in_array(self::CONST_ENABLE_HEALTH_SEO, $option) && !defined('STACKSIGHT_INCLUDE_HEALTH_SEO')){
-												define('STACKSIGHT_INCLUDE_HEALTH_SEO', true);
-											}
-											if(in_array(self::CONST_ENABLE_HEALTH_BACKUPS, $option) && !defined('STACKSIGHT_INCLUDE_HEALTH_BACKUPS')){
-												define('STACKSIGHT_INCLUDE_HEALTH_BACKUPS', true);
-											}
-											if(in_array(self::CONST_ENABLE_HEALTH_SECURITY, $option) && !defined('STACKSIGHT_INCLUDE_HEALTH_SECURITY')){
-												define('STACKSIGHT_INCLUDE_HEALTH_SECURITY', true);
-											}
-										}
-										break;
 								}
 							}
 						}
-//					Slack integration options
-						elseif($key == 'stacksight_opt_slack'){
+//					Features integration options
+						elseif($key == 'stacksight_opt_features'){
 							foreach($config_section as $key => $option){
 								switch($key){
-									case 'slack_url':
-										if(!defined('STACKSIGHT_INCOMING_SLACK_URL') && $option){
-											define('STACKSIGHT_INCOMING_SLACK_URL', $option);
+									case 'include_logs':
+										if(!defined('STACKSIGHT_INCLUDE_LOGS') && $option){
+											define('STACKSIGHT_INCLUDE_LOGS', $option);
 										}
 										break;
-									case 'enable_slack_notify_logs':
-										if(!defined('STACKSIGHT_SLACK_NOTIFY_LOGS')){
+									case 'include_health':
+										if(!defined('STACKSIGHT_INCLUDE_HEALTH')){
 											if($option == true){
-												define('STACKSIGHT_SLACK_NOTIFY_LOGS', true);
+												define('STACKSIGHT_INCLUDE_HEALTH', true);
 											}
 										}
 										break;
-									case 'enable_slack_options':
-										if(!defined('STACKSIGHT_SLACK_NOTIFY_LOGS_OPTIONS') && $option && is_array($option)){
-											define('STACKSIGHT_SLACK_NOTIFY_LOGS_OPTIONS', serialize($option));
+									case 'include_inventory':
+										if(!defined('STACKSIGHT_INCLUDE_INVENTORY')){
+											if($option == true){
+												define('STACKSIGHT_INCLUDE_INVENTORY', true);
+											}
+										}
+										break;
+									case 'include_events':
+										if(!defined('STACKSIGHT_INCLUDE_EVENTS')){
+											if($option == true){
+												define('STACKSIGHT_INCLUDE_EVENTS', true);
+											}
+										}
+										break;
+									case 'include_updates':
+										if(!defined('STACKSIGHT_INCLUDE_UPDATES')){
+											if($option == true){
+												define('STACKSIGHT_INCLUDE_UPDATES', true);
+											}
 										}
 										break;
 								}
