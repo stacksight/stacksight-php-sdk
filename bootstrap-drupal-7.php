@@ -132,8 +132,7 @@ class DrupalBootstrap
 
                 $handle_errors = FALSE;
                 $handle_fatal_errors = TRUE;
-                if(defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS === true){
-                    die('LOGS IS ENABLE');
+                if(defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS == true){
                     new SSLogsTracker($this->ss_client, $handle_errors, $handle_fatal_errors);
                 }
                 define('STACKSIGHT_BOOTSTRAPED', TRUE);
