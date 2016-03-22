@@ -8,7 +8,7 @@ class SSUtilities {
 	}
 
 	static function error_log($message, $level = 'info') {
-	    if (!$message) return;
+		if (!$message || (!defined('STACKSIGHT_DEBUG') || (defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG !== true))) return;
 
 	    if (is_array($message) || is_object($message)) $message = print_r($message, true);
 
