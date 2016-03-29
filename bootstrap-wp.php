@@ -98,10 +98,16 @@ class WPBootstrap{
 										}
 										break;
 									case 'include_events':
-										if(!defined('STACKSIGHT_INCLUDE_EVENTS')){
-											if($option == true){
-												define('STACKSIGHT_INCLUDE_EVENTS', true);
+										if(file_exists(ABSPATH .'wp-content/plugins/aryo-activity-log/aryo-activity-log.php')){
+											define('STACKSIGHT_DEPENDENCY_AAL', true);
+											if(!defined('STACKSIGHT_INCLUDE_EVENTS')){
+												if($option == true){
+													define('STACKSIGHT_INCLUDE_EVENTS', true);
+												}
 											}
+										} else{
+											// AAL doesn't exist
+											define('STACKSIGHT_DEPENDENCY_AAL', false);
 										}
 										break;
 									case 'include_updates':
