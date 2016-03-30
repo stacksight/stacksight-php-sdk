@@ -44,6 +44,7 @@ class WPBootstrap{
 				}
 			}
 		}
+		define('STACKSIGHT_PHP_SDK_INCLUDE', true);
 	}
 
 	public function init(){
@@ -98,16 +99,10 @@ class WPBootstrap{
 										}
 										break;
 									case 'include_events':
-										if(file_exists(ABSPATH .'wp-content/plugins/aryo-activity-log/aryo-activity-log.php')){
-											define('STACKSIGHT_DEPENDENCY_AAL', true);
-											if(!defined('STACKSIGHT_INCLUDE_EVENTS')){
-												if($option == true){
-													define('STACKSIGHT_INCLUDE_EVENTS', true);
-												}
+										if(!defined('STACKSIGHT_INCLUDE_EVENTS')){
+											if($option == true){
+												define('STACKSIGHT_INCLUDE_EVENTS', true);
 											}
-										} else{
-											// AAL doesn't exist
-											define('STACKSIGHT_DEPENDENCY_AAL', false);
 										}
 										break;
 									case 'include_updates':
@@ -175,12 +170,12 @@ class WPBootstrap{
 		else
 			$where = 'domain = "'.$dm_domain.'"';
 
-		$sql = "SELECT blog_id FROM ".$defined_prefix."domain_mapping WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
+		$sql = "SELECT blog_id FROM ".$defined_prefix."blogs WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
 		if ($query =  mysql_query($sql)) {
 			if($blog_id = @mysql_result($query, 0)){
 				return $blog_id;
 			} else{
-				$sql = "SELECT blog_id FROM ".$defined_prefix."blogs WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
+				$sql = "SELECT blog_id FROM ".$defined_prefix."domain_mapping WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
 				if ($query =  mysql_query($sql)) {
 					if($blog_id = @mysql_result($query, 0)){
 						return $blog_id;
@@ -204,4 +199,3 @@ class WPBootstrap{
 
 $wp_stacksight = new WPBootstrap($table_prefix);
 $wp_stacksight->init();
-
