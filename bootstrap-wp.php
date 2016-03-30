@@ -44,6 +44,12 @@ class WPBootstrap{
 				}
 			}
 		}
+		if(file_exists(ABSPATH .'wp-content/plugins/aryo-activity-log/aryo-activity-log.php')){
+			define('STACKSIGHT_DEPENDENCY_AAL', true);
+		} else{
+			// AAL doesn't exist
+			define('STACKSIGHT_DEPENDENCY_AAL', false);
+		}
 		define('STACKSIGHT_PHP_SDK_INCLUDE', true);
 	}
 
