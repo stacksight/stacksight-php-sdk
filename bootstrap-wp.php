@@ -44,6 +44,7 @@ class WPBootstrap{
 				}
 			}
 		}
+		define('STACKSIGHT_PHP_SDK_INCLUDE', true);
 	}
 
 	public function init(){
@@ -169,12 +170,12 @@ class WPBootstrap{
 		else
 			$where = 'domain = "'.$dm_domain.'"';
 
-		$sql = "SELECT blog_id FROM ".$defined_prefix."domain_mapping WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
+		$sql = "SELECT blog_id FROM ".$defined_prefix."blogs WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
 		if ($query =  mysql_query($sql)) {
 			if($blog_id = @mysql_result($query, 0)){
 				return $blog_id;
 			} else{
-				$sql = "SELECT blog_id FROM ".$defined_prefix."blogs WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
+				$sql = "SELECT blog_id FROM ".$defined_prefix."domain_mapping WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
 				if ($query =  mysql_query($sql)) {
 					if($blog_id = @mysql_result($query, 0)){
 						return $blog_id;
@@ -198,4 +199,3 @@ class WPBootstrap{
 
 $wp_stacksight = new WPBootstrap($table_prefix);
 $wp_stacksight->init();
-
