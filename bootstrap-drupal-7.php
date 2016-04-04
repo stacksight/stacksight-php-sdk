@@ -73,18 +73,24 @@ class DrupalBootstrap
                     $option = (isset($option_obkect['value']) && !empty($option_obkect['value'])) ? unserialize($option_obkect['value']) : false;
                     switch($key){
                         case 'stacksight_app_id':
-                            if (!defined('STACKSIGHT_APP_ID') && $option) {
-                                define('STACKSIGHT_APP_ID', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+                                if (!defined('STACKSIGHT_APP_ID') && $option) {
+                                    define('STACKSIGHT_APP_ID', $option);
+                                }
                             }
                             break;
                         case 'stacksight_token':
-                            if (!defined('STACKSIGHT_TOKEN') && $option) {
-                                define('STACKSIGHT_TOKEN', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+                                if (!defined('STACKSIGHT_TOKEN') && $option) {
+                                    define('STACKSIGHT_TOKEN', $option);
+                                }
                             }
                             break;
                         case 'stacksight_group':
-                            if (!defined('STACKSIGHT_GROUP') && $option) {
-                                define('STACKSIGHT_GROUP', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+                                if (!defined('STACKSIGHT_GROUP') && $option) {
+                                    define('STACKSIGHT_GROUP', $option);
+                                }
                             }
                             break;
                         case 'stacksight_include_logs':
