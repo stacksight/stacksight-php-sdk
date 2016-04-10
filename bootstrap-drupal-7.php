@@ -68,15 +68,22 @@ class DrupalBootstrap
             ->query('SELECT * FROM {' . $this->connection->escapeTable('variable') . '} WHERE name IN (:names)', array(':names' => $this->options))
             ->fetchAllAssoc('name', PDO::FETCH_ASSOC);
 
-        if (isset($query['stacksight_token'])) {
-            $this->data_options = $query;
+        if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+            if (isset($query['stacksight_token'])) {
+                $this->data_options = $query;
+                $this->ready = true;
+            }
+        } else{
+            if (!empty($query)) {
+                $this->data_options = $query;
+            }
             $this->ready = true;
         }
     }
 
     public function init(){
-        if ($this->ready == true && !empty($this->data_options)) {
-            if(is_array($this->data_options)){
+        if ($this->ready == true) {
+            if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_obkect){
                     $option = (isset($option_obkect['value']) && !empty($option_obkect['value'])) ? unserialize($option_obkect['value']) : false;
                     switch($key){
@@ -137,7 +144,6 @@ class DrupalBootstrap
                     }
                 }
             }
-
             // Define default values
             foreach($this->defaultDefines as $key => $default_define){
                 if(!defined($key)){

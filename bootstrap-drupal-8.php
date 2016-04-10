@@ -57,15 +57,13 @@ class DrupalBootstrap
                     $this->data_options[$value_key] =  $value;
                 }
             }
-            if (isset($this->data_options['token'])) {
-                $this->ready = true;
-            }
         }
+        $this->ready = true;
     }
 
     public function init(){
-        if ($this->ready == true && !empty($this->data_options)) {
-            if(is_array($this->data_options)){
+        if ($this->ready == true) {
+            if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_object){
                     $option = (isset($option_object) && !empty($option_object)) ? $option_object : false;
                     switch($key){
