@@ -106,30 +106,22 @@ class WPBootstrap{
 										break;
 									case 'include_health':
 										if(!defined('STACKSIGHT_INCLUDE_HEALTH')){
-											if($option == true){
-												define('STACKSIGHT_INCLUDE_HEALTH', true);
-											}
+											define('STACKSIGHT_INCLUDE_HEALTH', $option);
 										}
 										break;
 									case 'include_inventory':
 										if(!defined('STACKSIGHT_INCLUDE_INVENTORY')){
-											if($option == true){
-												define('STACKSIGHT_INCLUDE_INVENTORY', true);
-											}
+											define('STACKSIGHT_INCLUDE_INVENTORY', $option);
 										}
 										break;
 									case 'include_events':
 										if(!defined('STACKSIGHT_INCLUDE_EVENTS')){
-											if($option == true){
-												define('STACKSIGHT_INCLUDE_EVENTS', true);
-											}
+											define('STACKSIGHT_INCLUDE_EVENTS', $option);
 										}
 										break;
 									case 'include_updates':
 										if(!defined('STACKSIGHT_INCLUDE_UPDATES')){
-											if($option == true){
-												define('STACKSIGHT_INCLUDE_UPDATES', true);
-											}
+											define('STACKSIGHT_INCLUDE_UPDATES', $option);
 										}
 										break;
 								}
