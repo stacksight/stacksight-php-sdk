@@ -38,6 +38,14 @@ class DrupalBootstrap
 
     protected $ss_client;
 
+    public $defaultDefines = array(
+        'STACKSIGHT_INCLUDE_LOGS' => false,
+        'STACKSIGHT_INCLUDE_HEALTH' => true,
+        'STACKSIGHT_INCLUDE_INVENTORY' => true,
+        'STACKSIGHT_INCLUDE_EVENTS' => true,
+        'STACKSIGHT_INCLUDE_UPDATES' => true
+    );
+
     public function __construct($db_options){
         global $ss_client;
         $this->ss_client =& $ss_client;
@@ -127,6 +135,13 @@ class DrupalBootstrap
                             }
                             break;
                     }
+                }
+            }
+
+            // Define default values
+            foreach($this->defaultDefines as $key => $default_define){
+                if(!defined($key)){
+                    define($key, $default_define);
                 }
             }
 
