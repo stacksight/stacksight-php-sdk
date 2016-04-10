@@ -58,7 +58,14 @@ class DrupalBootstrap
                 }
             }
         }
-        $this->ready = true;
+
+        if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+            if (isset($this->data_options['token'])) {
+                $this->ready = true;
+            }
+        } else{
+            $this->ready = true;
+        }
     }
 
     public function init(){
@@ -68,18 +75,24 @@ class DrupalBootstrap
                     $option = (isset($option_object) && !empty($option_object)) ? $option_object : false;
                     switch($key){
                         case 'app_id':
-                            if (!defined('STACKSIGHT_APP_ID') && $option) {
-                                define('STACKSIGHT_APP_ID', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
+                                if (!defined('STACKSIGHT_APP_ID') && $option) {
+                                    define('STACKSIGHT_APP_ID', $option);
+                                }
                             }
                             break;
                         case 'token':
-                            if (!defined('STACKSIGHT_TOKEN') && $option) {
-                                define('STACKSIGHT_TOKEN', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
+                                if (!defined('STACKSIGHT_TOKEN') && $option) {
+                                    define('STACKSIGHT_TOKEN', $option);
+                                }
                             }
                             break;
                         case 'group':
-                            if (!defined('STACKSIGHT_GROUP') && $option) {
-                                define('STACKSIGHT_GROUP', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
+                                if (!defined('STACKSIGHT_GROUP') && $option) {
+                                    define('STACKSIGHT_GROUP', $option);
+                                }
                             }
                             break;
                         case 'include_logs':

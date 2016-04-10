@@ -68,15 +68,15 @@ class DrupalBootstrap
             ->query('SELECT * FROM {' . $this->connection->escapeTable('variable') . '} WHERE name IN (:names)', array(':names' => $this->options))
             ->fetchAllAssoc('name', PDO::FETCH_ASSOC);
 
+        if (!empty($query)) {
+            $this->data_options = $query;
+        }
+
         if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
             if (isset($query['stacksight_token'])) {
-                $this->data_options = $query;
                 $this->ready = true;
             }
         } else{
-            if (!empty($query)) {
-                $this->data_options = $query;
-            }
             $this->ready = true;
         }
     }
