@@ -64,18 +64,24 @@ class WPBootstrap{
 							foreach($config_section as $key => $option){
 								switch($key){
 									case '_id':
-										if(!defined('STACKSIGHT_APP_ID') && $option){
-											define('STACKSIGHT_APP_ID', $option);
+										if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
+											if (!defined('STACKSIGHT_APP_ID') && $option) {
+												define('STACKSIGHT_APP_ID', $option);
+											}
 										}
 										break;
 									case 'token':
-										if(!defined('STACKSIGHT_TOKEN') && $option){
-											define('STACKSIGHT_TOKEN', $option);
+										if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
+											if (!defined('STACKSIGHT_TOKEN') && $option) {
+												define('STACKSIGHT_TOKEN', $option);
+											}
 										}
 										break;
 									case 'group':
-										if(!defined('STACKSIGHT_GROUP') && $option){
-											define('STACKSIGHT_GROUP', $option);
+										if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
+											if (!defined('STACKSIGHT_GROUP') && $option) {
+												define('STACKSIGHT_GROUP', $option);
+											}
 										}
 										break;
 								}
