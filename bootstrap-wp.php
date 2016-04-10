@@ -29,6 +29,14 @@ class WPBootstrap{
 	private $connection;
 	private $total_db;
 
+	public $defaultDefines = array(
+		'STACKSIGHT_INCLUDE_LOGS' => false,
+		'STACKSIGHT_INCLUDE_HEALTH' => true,
+		'STACKSIGHT_INCLUDE_INVENTORY' => true,
+		'STACKSIGHT_INCLUDE_EVENTS' => true,
+		'STACKSIGHT_INCLUDE_UPDATES' => true
+	);
+
 	const CONST_ENABLE_LOGS = 'logs';
 	const CONST_ENABLE_INVENTORY = 'inventory';
 	const CONST_ENABLE_HEALTH_SEO = 'health_seo';
@@ -130,6 +138,14 @@ class WPBootstrap{
 					}
 				}
 			}
+
+			// Define default values
+			foreach($this->defaultDefines as $key => $default_define){
+				if(!defined($key)){
+					define($key, $default_define);
+				}
+			}
+
 			if(defined('STACKSIGHT_TOKEN')){
 				$app_id = (defined('STACKSIGHT_APP_ID')) ? STACKSIGHT_APP_ID : false;
 				$group = (defined('STACKSIGHT_GROUP')) ? STACKSIGHT_GROUP : false;

@@ -38,6 +38,14 @@ class DrupalBootstrap
 
     protected $ss_client;
 
+    public $defaultDefines = array(
+        'STACKSIGHT_INCLUDE_LOGS' => false,
+        'STACKSIGHT_INCLUDE_HEALTH' => true,
+        'STACKSIGHT_INCLUDE_INVENTORY' => true,
+        'STACKSIGHT_INCLUDE_EVENTS' => true,
+        'STACKSIGHT_INCLUDE_UPDATES' => true
+    );
+
     public function __construct($db_options){
         global $ss_client;
         $this->ss_client =& $ss_client;
@@ -60,15 +68,22 @@ class DrupalBootstrap
             ->query('SELECT * FROM {' . $this->connection->escapeTable('variable') . '} WHERE name IN (:names)', array(':names' => $this->options))
             ->fetchAllAssoc('name', PDO::FETCH_ASSOC);
 
-        if (isset($query['stacksight_token'])) {
+        if (!empty($query)) {
             $this->data_options = $query;
+        }
+
+        if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+            if (isset($query['stacksight_token'])) {
+                $this->ready = true;
+            }
+        } else{
             $this->ready = true;
         }
     }
 
     public function init(){
-        if ($this->ready == true && !empty($this->data_options)) {
-            if(is_array($this->data_options)){
+        if ($this->ready == true) {
+            if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_obkect){
                     $option = (isset($option_obkect['value']) && !empty($option_obkect['value'])) ? unserialize($option_obkect['value']) : false;
                     switch($key){
@@ -127,6 +142,12 @@ class DrupalBootstrap
                             }
                             break;
                     }
+                }
+            }
+            // Define default values
+            foreach($this->defaultDefines as $key => $default_define){
+                if(!defined($key)){
+                    define($key, $default_define);
                 }
             }
 
