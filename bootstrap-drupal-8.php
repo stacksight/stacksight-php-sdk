@@ -31,6 +31,14 @@ class DrupalBootstrap
 
     private $root;
 
+    public $defaultDefines = array(
+        'STACKSIGHT_INCLUDE_LOGS' => false,
+        'STACKSIGHT_INCLUDE_HEALTH' => true,
+        'STACKSIGHT_INCLUDE_INVENTORY' => true,
+        'STACKSIGHT_INCLUDE_EVENTS' => true,
+        'STACKSIGHT_INCLUDE_UPDATES' => true
+    );
+
     public function __construct($database){
         global $ss_client;
         $this->root = dirname(dirname(substr(__DIR__, 0, -strlen(__NAMESPACE__))));
@@ -113,6 +121,13 @@ class DrupalBootstrap
                 }
             }
 
+            // Define default values
+            foreach($this->defaultDefines as $key => $default_define){
+                if(!defined($key)){
+                    define($key, $default_define);
+                }
+            }
+            
             if(defined('STACKSIGHT_TOKEN')){
                 if(defined('STACKSIGHT_APP_ID'))
                     $this->ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
