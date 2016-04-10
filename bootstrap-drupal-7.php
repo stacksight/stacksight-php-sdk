@@ -38,6 +38,14 @@ class DrupalBootstrap
 
     protected $ss_client;
 
+    public $defaultDefines = array(
+        'STACKSIGHT_INCLUDE_LOGS' => false,
+        'STACKSIGHT_INCLUDE_HEALTH' => true,
+        'STACKSIGHT_INCLUDE_INVENTORY' => true,
+        'STACKSIGHT_INCLUDE_EVENTS' => true,
+        'STACKSIGHT_INCLUDE_UPDATES' => true
+    );
+
     public function __construct($db_options){
         global $ss_client;
         $this->ss_client =& $ss_client;
@@ -60,31 +68,44 @@ class DrupalBootstrap
             ->query('SELECT * FROM {' . $this->connection->escapeTable('variable') . '} WHERE name IN (:names)', array(':names' => $this->options))
             ->fetchAllAssoc('name', PDO::FETCH_ASSOC);
 
-        if (isset($query['stacksight_token'])) {
+        if (!empty($query)) {
             $this->data_options = $query;
+        }
+
+        if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+            if (isset($query['stacksight_token'])) {
+                $this->ready = true;
+            }
+        } else{
             $this->ready = true;
         }
     }
 
     public function init(){
-        if ($this->ready == true && !empty($this->data_options)) {
-            if(is_array($this->data_options)){
+        if ($this->ready == true) {
+            if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_obkect){
                     $option = (isset($option_obkect['value']) && !empty($option_obkect['value'])) ? unserialize($option_obkect['value']) : false;
                     switch($key){
                         case 'stacksight_app_id':
-                            if (!defined('STACKSIGHT_APP_ID') && $option) {
-                                define('STACKSIGHT_APP_ID', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+                                if (!defined('STACKSIGHT_APP_ID') && $option) {
+                                    define('STACKSIGHT_APP_ID', $option);
+                                }
                             }
                             break;
                         case 'stacksight_token':
-                            if (!defined('STACKSIGHT_TOKEN') && $option) {
-                                define('STACKSIGHT_TOKEN', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+                                if (!defined('STACKSIGHT_TOKEN') && $option) {
+                                    define('STACKSIGHT_TOKEN', $option);
+                                }
                             }
                             break;
                         case 'stacksight_group':
-                            if (!defined('STACKSIGHT_GROUP') && $option) {
-                                define('STACKSIGHT_GROUP', $option);
+                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
+                                if (!defined('STACKSIGHT_GROUP') && $option) {
+                                    define('STACKSIGHT_GROUP', $option);
+                                }
                             }
                             break;
                         case 'stacksight_include_logs':
@@ -121,6 +142,12 @@ class DrupalBootstrap
                             }
                             break;
                     }
+                }
+            }
+            // Define default values
+            foreach($this->defaultDefines as $key => $default_define){
+                if(!defined($key)){
+                    define($key, $default_define);
                 }
             }
 
