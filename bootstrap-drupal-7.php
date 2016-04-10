@@ -115,30 +115,22 @@ class DrupalBootstrap
                             break;
                         case 'stacksight_include_health':
                             if (!defined('STACKSIGHT_INCLUDE_HEALTH')) {
-                                if ($option == true) {
-                                    define('STACKSIGHT_INCLUDE_HEALTH', true);
-                                }
+                                define('STACKSIGHT_INCLUDE_HEALTH', $option);
                             }
                             break;
                         case 'stacksight_include_inventory':
                             if (!defined('STACKSIGHT_INCLUDE_INVENTORY')) {
-                                if ($option == true) {
-                                    define('STACKSIGHT_INCLUDE_INVENTORY', true);
-                                }
+                                define('STACKSIGHT_INCLUDE_INVENTORY', $option);
                             }
                             break;
                         case 'stacksight_include_events':
                             if (!defined('STACKSIGHT_INCLUDE_EVENTS')) {
-                                if ($option == true) {
-                                    define('STACKSIGHT_INCLUDE_EVENTS', true);
-                                }
+                                define('STACKSIGHT_INCLUDE_EVENTS', $option);
                             }
                             break;
                         case 'stacksight_include_updates':
                             if (!defined('STACKSIGHT_INCLUDE_UPDATES')) {
-                                if ($option == true) {
-                                    define('STACKSIGHT_INCLUDE_UPDATES', true);
-                                }
+                                define('STACKSIGHT_INCLUDE_UPDATES', $option);
                             }
                             break;
                     }
