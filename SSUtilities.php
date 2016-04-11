@@ -1,7 +1,7 @@
 <?php 
 
 class SSUtilities {
-
+	
 	static function timeJSFormat() {
 		$mct = explode(" ", microtime());
 		return date("Y-m-d\TH:i:s",$mct[1]).substr((string)$mct[0],1,4).'Z';
@@ -20,7 +20,17 @@ class SSUtilities {
 	    // $date = new Datetime(null, new DateTimeZone('Europe/Minsk'));
 	    $date = new Datetime();
 	    $date_format = $date->format('d.m.Y H:i:s');
-	    error_log($date_format .' '. $message."\n", 3, $log_file);
+
+		$check_file = dirname(__FILE__).'/../permissions.check';
+		$is_writable = @file_put_contents($check_file, "check");
+		$_SESSION['STACKSIGHT_MESSAGE'] = array();
+		if ($is_writable > 0){
+			error_log($date_format .' '. $message."\n", 3, $log_file);
+		} else{
+			// PHP doesn't have permissions
+			$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
+		}
+		@unlink($check_file);
 	}
 
 	static function t($str, $params = array()) {
