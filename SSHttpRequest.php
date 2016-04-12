@@ -11,17 +11,75 @@ class SSHttpRequest {
     const HEALTH_URL = '/health/health';
     const INVENTORY_URL = '/inventory/inventory';
 
+    private $debug_mode = false;
+
     public function __construct(){
         if(!defined('INDEX_ENDPOINT_01'))
             define('INDEX_ENDPOINT_01', $this->hprotocol.'://'.$this->host.'/'.$this->api_path);
+
+        if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
+            $this->debug_mode = true;
+        }
     }
 
     public function publishEvent($data) {
+        if($this->debug_mode === true){
+            $_SESSION['stacksight_debug']['events'] = array();
+            $data = array(
+                'type' =>  $this->type,
+                'data' => $data
+            );
+            $_SESSION['stacksight_debug']['events'][] = $data;
+        }
         $this->sendRequest($data);
     }
 
     public function sendLog($data) {
+        if($this->debug_mode === true) {
+            $_SESSION['stacksight_debug']['logs'] = array();
+            $data = array(
+                'type' =>  $this->type,
+                'data' => $data
+            );
+            $_SESSION['stacksight_debug']['logs'][] = $data;
+        }
         $this->sendRequest($data);
+    }
+
+    public function sendUpdates($data) {
+        if($this->debug_mode === true) {
+            $_SESSION['stacksight_debug']['updates'] = array();
+            $data = array(
+                'type' =>  $this->type,
+                'data' => $data
+            );
+            $_SESSION['stacksight_debug']['updates'][] = $data;
+        }
+        $this->sendRequest($data, self::UPDATE_URL);
+    }
+
+    public function sendHealth($data) {
+        if($this->debug_mode === true) {
+            $_SESSION['stacksight_debug']['health'] = array();
+            $data = array(
+                'type' =>  $this->type,
+                'data' => $data
+            );
+            $_SESSION['stacksight_debug']['health'][] = $data;
+        }
+        $this->sendRequest($data, self::HEALTH_URL);
+    }
+
+    public function sendInventory($data){
+        if($this->debug_mode === true) {
+            $_SESSION['stacksight_debug']['inventory'] = array();
+            $data = array(
+                'type' =>  $this->type,
+                'data' => $data
+            );
+            $_SESSION['stacksight_debug']['inventory'][] = $data;
+        }
+        $this->sendRequest($data, self::INVENTORY_URL);
     }
 
     public function sendSlackNotify($data) {
@@ -31,17 +89,4 @@ class SSHttpRequest {
         $this->createSocket(true);
         $this->sendRequest($data, false);
     }
-
-    public function sendUpdates($data) {
-        $this->sendRequest($data, self::UPDATE_URL);
-    }
-
-    public function sendHealth($data) {
-        $this->sendRequest($data, self::HEALTH_URL);
-    }
-
-    public function sendInventory($data){
-        $this->sendRequest($data, self::INVENTORY_URL);
-    }
-
 }

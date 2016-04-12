@@ -1,6 +1,9 @@
 <?php 
 
 class SSHttpRequestCurl extends SSHttpRequest implements SShttpInterface {
+
+    public $type = 'curl';
+
     public function sendRequest($data, $url = false){
         $data_string = json_encode($data);
         $total_url = ($url) ? INDEX_ENDPOINT_01.$url : INDEX_ENDPOINT_01.'/'.$data['index'].'/'.$data['eType'];

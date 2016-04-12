@@ -11,6 +11,8 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
 
     private $_socket_error = array();
 
+    public $type = 'sockets';
+
     public function __destruct(){
         $this->closeSocket();
     }
