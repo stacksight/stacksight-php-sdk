@@ -14,20 +14,18 @@ class SSHttpRequestCurl extends SSHttpRequest implements SShttpInterface {
         curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
 //        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 10);
         curl_setopt($ch, CURLOPT_USERAGENT, 'api');
-        if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
-            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-        } else{
-            curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-        }
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        }else{
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-        }
         curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
         curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 10);
+        if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+            curl_setopt($ch, CURLOPT_HEADER, 1);
+        } else{
+            curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+        }
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 'Content-Type: application/json',
@@ -39,11 +37,14 @@ class SSHttpRequestCurl extends SSHttpRequest implements SShttpInterface {
         if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
             $curl_handle_info = curl_getinfo($ch);
             $curl_info = array();
+            /*
             if(!isset($curl_info[$id_handle]))
                 $curl_info[$id_handle] = $curl_handle_info;
             elseif((int) $curl_handle_info['http_code'] == 200){
                 $curl_info[$id_handle] = $curl_handle_info;
             }
+            */
+            $curl_info[$id_handle] = $curl_handle_info;
             $curl_info[$id_handle]['response'] = curl_multi_getcontent($ch);
             $_SESSION['stacksight_debug'][$id_handle]['request_info'] = $curl_info[$id_handle];
         }

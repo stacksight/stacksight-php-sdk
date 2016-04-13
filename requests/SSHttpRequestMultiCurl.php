@@ -34,21 +34,20 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
                 curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
                 curl_setopt($ch, CURLOPT_USERAGENT, 'api');
-                if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-                } else{
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 1);
-                }
-                curl_setopt($ch, CURLOPT_HEADER, false);
                 curl_setopt($ch, CURLINFO_HEADER_OUT, false);
-                if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                }else{
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
-                }
                 curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
                 curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 10);
+                if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+                    curl_setopt($ch, CURLOPT_HEADER, 1);
+                } else{
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 1);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+                    curl_setopt($ch, CURLOPT_HEADER, 0);
+                }
+
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                         'Content-Type: application/json',
                         'Content-Length: ' . strlen($data_string))
