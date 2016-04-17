@@ -20,7 +20,7 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
         }
     }
 
-    public function sendRequest($data = false, $url = false)
+    public function sendRequest($data = false, $url = false, $id_handle = false)
     {
         if (!empty($this->objects)) {
             $mh = curl_multi_init();
