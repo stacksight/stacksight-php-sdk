@@ -69,7 +69,9 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
             $req.= "\r\n";
             $req.= $content;
 
-            if(!@fwrite($this->_socket, $req)){
+            if($sended_lenth = @fwrite($this->_socket, $req)){
+                $this->setDebugInfo(false, $sended_lenth);
+            } else{
                 $sended = false;
 
                 $error_num = $this->_socket_error['error_num'];
@@ -77,9 +79,9 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
 
                 for($i = 0; $i <= $this->max_retry; $i++){
                     usleep(200000);
-                    if(@fwrite($this->_socket, $req)){
+                    if($sended_lenth = @fwrite($this->_socket, $req)){
                         $sended = true;
-                        $this->setDebugInfo();
+                        $this->setDebugInfo(false, $sended_lenth);
                         break;
                     } else{
                         $error_num = $this->_socket_error['error_num'];
@@ -93,17 +95,15 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
                     $this->closeSocket();
                     usleep(200000);
                     $this->createSocket();
-                    if(!@fwrite($this->_socket, $req)){
+                    if($sended_lenth = @fwrite($this->_socket, $req)){
+                        $this->setDebugInfo(false, $sended_lenth);
+                    } else{
                         SSUtilities::error_log("Error fwrire socket after sleep.", 'error_socket_connection');
                         $cURL = new SSHttpRequestCurl();
                         $cURL->sendRequest($data);
                         $this->setDebugInfo(true, "#$error_num: $error_message. Data will sends through cURL");
-                    } else{
-                        $this->setDebugInfo();
                     }
                 }
-            } else{
-                $this->setDebugInfo();
             }
         } else {
             if(!empty($this->_socket_error)){
@@ -125,9 +125,14 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
                     'meta' => ($this->_socket) ? stream_get_meta_data($this->_socket) : false
                 );
             } else{
+                if($data = fread($this->_socket, 4096)){
+                    $sended_data = $data;
+                } else{
+                    $sended_data = 'Wrote '.$message.' bytes.';
+                }
                 $_SESSION['stacksight_debug'][$this->id_handle]['request_info'][] = array(
                     'error' => false,
-                    'data' => fread($this->_socket, 4096),
+                    'data' => $sended_data,
                     'meta' => ($this->_socket) ? stream_get_meta_data($this->_socket) : false
                 );
             }
