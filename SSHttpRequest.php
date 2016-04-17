@@ -7,6 +7,7 @@ class SSHttpRequest {
     public $api_path = 'v0.1/index';
     public $port = 443;
 
+    const EVENTS_URL = '/updates/update';
     const UPDATE_URL = '/updates/update';
     const HEALTH_URL = '/health/health';
     const INVENTORY_URL = '/inventory/inventory';
