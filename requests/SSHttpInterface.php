@@ -6,5 +6,5 @@ interface SShttpInterface{
     public function sendSlackNotify($data);
     public function sendUpdates($data);
     public function sendHealth($data);
-    public function sendRequest($data, $url = false);
+    public function sendRequest($data, $url = false, $id_handle = false);
 }
