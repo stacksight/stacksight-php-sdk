@@ -10,7 +10,8 @@ class SSHttpRequest {
     const UPDATE_URL = '/updates/update';
     const HEALTH_URL = '/health/health';
     const INVENTORY_URL = '/inventory/inventory';
-    
+    const LOGS_URL = '/logs/log';
+
     public function __construct(){
         if(!defined('INDEX_ENDPOINT_01'))
             define('INDEX_ENDPOINT_01', $this->hprotocol.'://'.$this->host.'/'.$this->api_path);
@@ -19,35 +20,35 @@ class SSHttpRequest {
     public function publishEvent($data) {
         if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
             $_SESSION['stacksight_debug']['events'] = array();
-            $data = array(
+            $data_for_log = array(
                 'type' =>  $this->type,
                 'data' => $data
             );
-            $_SESSION['stacksight_debug']['events']['data'][] = $data;
+            $_SESSION['stacksight_debug']['events']['data'][] = $data_for_log;
         }
         $this->sendRequest($data, false, 'events');
     }
 
     public function sendLog($data) {
         if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
-            $_SESSION['stacksight_debug']['logs'] = array();
-            $data = array(
+            $_SESSION['stacksight_debug']['events'] = array();
+            $data_for_log = array(
                 'type' =>  $this->type,
                 'data' => $data
             );
-            $_SESSION['stacksight_debug']['logs']['data'][] = $data;
+            $_SESSION['stacksight_debug']['logs']['data'][] = $data_for_log;
         }
-        $this->sendRequest($data, 'logs');
+        $this->sendRequest($data, self::LOGS_URL, 'logs');
     }
 
     public function sendUpdates($data) {
         if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
             $_SESSION['stacksight_debug']['updates'] = array();
-            $data = array(
+            $data_for_log = array(
                 'type' =>  $this->type,
                 'data' => $data
             );
-            $_SESSION['stacksight_debug']['updates']['data'][] = $data;
+            $_SESSION['stacksight_debug']['updates']['data'][] = $data_for_log;
         }
         $this->sendRequest($data, self::UPDATE_URL, 'updates');
     }
@@ -55,25 +56,23 @@ class SSHttpRequest {
     public function sendHealth($data) {
         if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
             $_SESSION['stacksight_debug']['health'] = array();
-            $data = array(
+            $data_for_log = array(
                 'type' =>  $this->type,
                 'data' => $data
             );
-            $_SESSION['stacksight_debug']['health']['data'][] = $data;
+            $_SESSION['stacksight_debug']['health']['data'][] = $data_for_log;
         }
-//        print_r($_SESSION['stacksight_debug']['health']);
-//        die();
         $this->sendRequest($data, self::HEALTH_URL, 'health');
     }
 
     public function sendInventory($data){
         if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
             $_SESSION['stacksight_debug']['inventory'] = array();
-            $data = array(
+            $data_for_log = array(
                 'type' =>  $this->type,
                 'data' => $data
             );
-            $_SESSION['stacksight_debug']['inventory']['data'][] = $data;
+            $_SESSION['stacksight_debug']['inventory']['data'][] = $data_for_log;
         }
         $this->sendRequest($data, self::INVENTORY_URL, 'inventory');
     }
