@@ -37,10 +37,11 @@ class SSUtilities {
 	    // $date = new Datetime(null, new DateTimeZone('Europe/Minsk'));
 	    $date = new Datetime();
 	    $date_format = $date->format('d.m.Y H:i:s');
+		$_SESSION['STACKSIGHT_MESSAGE'] = array();
 
 		if($check_file = @dirname(__FILE__).'/../permissions.check'){
-			if($is_writable = @file_put_contents($check_file, "check")){
-				$_SESSION['STACKSIGHT_MESSAGE'] = array();
+			try {
+				$is_writable = @file_put_contents($check_file, "check");
 				if ($is_writable > 0){
 					error_log($date_format .' '. $message."\n", 3, $log_file);
 					@unlink($check_file);
@@ -48,7 +49,8 @@ class SSUtilities {
 					// PHP doesn't have permissions
 					$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
 				}
-			} else{
+			}
+			catch (Exception $e) {
 				// PHP doesn't have permissions
 				$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
 			}
