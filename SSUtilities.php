@@ -39,14 +39,9 @@ class SSUtilities {
 	    $date_format = $date->format('d.m.Y H:i:s');
 		$_SESSION['STACKSIGHT_MESSAGE'] = array();
 
-		if($check_file = fopen(dirname(__FILE__).'/../permissions.check',"w")){
-			if (@fwrite($check_file, "check")){
-				error_log($date_format .' '. $message."\n", 3, $log_file);
-				@unlink($check_file);
-			} else{
-				// PHP doesn't have permissions
-				$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
-			}
+		if($check_file = @fopen(dirname(__FILE__).'/../permissions.check',"c")){
+			error_log($date_format .' '. $message."\n", 3, $log_file);
+			@unlink($check_file);
 		} else{
 			// PHP doesn't have permissions
 			$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
