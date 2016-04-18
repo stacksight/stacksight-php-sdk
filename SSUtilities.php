@@ -26,8 +26,9 @@ class SSUtilities {
 
 	static function checkPermissions(){
 		$_SESSION['STACKSIGHT_MESSAGE'] = array();
-		if($check_file = @fopen(dirname(__FILE__).'/../permissions.check',"c")){
-			@unlink($check_file);
+		$file_path = dirname(__FILE__).'/../permissions.check';
+		if($check_file = @fopen($file_path,"c")){
+			@unlink($file_path);
 		} else{
 			// PHP doesn't have permissions
 			$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
