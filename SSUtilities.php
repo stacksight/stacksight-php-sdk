@@ -24,6 +24,16 @@ class SSUtilities {
 		return date("Y-m-d\TH:i:s",$mct[1]).substr((string)$mct[0],1,4).'Z';
 	}
 
+	static function checkPermissions(){
+		$_SESSION['STACKSIGHT_MESSAGE'] = array();
+		if($check_file = @fopen(dirname(__FILE__).'/../permissions.check',"c")){
+			@unlink($check_file);
+		} else{
+			// PHP doesn't have permissions
+			$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
+		}
+	}
+
 	static function error_log($message, $level = 'info') {
 		if (!$message || (!defined('STACKSIGHT_DEBUG') || (defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG !== true))) return;
 
@@ -37,15 +47,6 @@ class SSUtilities {
 	    // $date = new Datetime(null, new DateTimeZone('Europe/Minsk'));
 	    $date = new Datetime();
 	    $date_format = $date->format('d.m.Y H:i:s');
-		$_SESSION['STACKSIGHT_MESSAGE'] = array();
-
-		if($check_file = @fopen(dirname(__FILE__).'/../permissions.check',"c")){
-			error_log($date_format .' '. $message."\n", 3, $log_file);
-			@unlink($check_file);
-		} else{
-			// PHP doesn't have permissions
-			$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
-		}
 	}
 
 	static function t($str, $params = array()) {
