@@ -38,16 +38,20 @@ class SSUtilities {
 	    $date = new Datetime();
 	    $date_format = $date->format('d.m.Y H:i:s');
 
-		$check_file = dirname(__FILE__).'/../permissions.check';
-		$is_writable = @file_put_contents($check_file, "check");
-		$_SESSION['STACKSIGHT_MESSAGE'] = array();
-		if ($is_writable > 0){
-			error_log($date_format .' '. $message."\n", 3, $log_file);
+		if($check_file = @dirname(__FILE__).'/../permissions.check'){
+			$is_writable = @file_put_contents($check_file, "check");
+			$_SESSION['STACKSIGHT_MESSAGE'] = array();
+			if ($is_writable > 0){
+				error_log($date_format .' '. $message."\n", 3, $log_file);
+			} else{
+				// PHP doesn't have permissions
+				$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
+			}
+			@unlink($check_file);
 		} else{
 			// PHP doesn't have permissions
 			$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
 		}
-		@unlink($check_file);
 	}
 
 	static function t($str, $params = array()) {
