@@ -7,7 +7,7 @@ class SSHttpRequest {
     public $api_path = 'v0.1/index';
     public $port = 443;
 
-    const EVENTS_URL = '/updates/update';
+    const EVENTS_URL = '/events/event';
     const UPDATE_URL = '/updates/update';
     const HEALTH_URL = '/health/health';
     const INVENTORY_URL = '/inventory/inventory';
@@ -27,7 +27,7 @@ class SSHttpRequest {
             );
             $_SESSION['stacksight_debug']['events']['data'][] = $data_for_log;
         }
-        $this->sendRequest($data, false, 'events');
+        $this->sendRequest($data, self::EVENTS_URL, 'events');
     }
 
     public function sendLog($data) {
