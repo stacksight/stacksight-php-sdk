@@ -29,15 +29,16 @@ class SSUtilities {
 		$file_path = dirname(__FILE__).'/../permissions.check';
 		if($check_file = @fopen($file_path,"c")){
 			@unlink($file_path);
+			return true;
 		} else{
 			// PHP doesn't have permissions
 			$_SESSION['STACKSIGHT_MESSAGE'][] = 'PHP doesn\'t have permissions to write log';
+			return false;
 		}
 	}
 
 	static function error_log($message, $level = 'info') {
 		if (!$message || (!defined('STACKSIGHT_DEBUG') || (defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG !== true))) return;
-
 	    if (is_array($message) || is_object($message)) $message = print_r($message, true);
 
 	    $log_file = dirname(__FILE__).'/../'.$level.'.log';
