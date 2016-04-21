@@ -17,7 +17,7 @@ if ( ! function_exists( 'get_plugins' ) ) {
 
 class WPBootstrap{
 
-	public $options = array('stacksight_opt', 'stacksight_opt_features');
+	public $options = array('stacksight_opt', 'stacksight_opt_features', 'stacksight_state');
 
 	private $multisite = false;
 	private $blog_id = false;
@@ -27,7 +27,7 @@ class WPBootstrap{
 	private $ready = false;
 
 	private $connection;
-	private $total_db;
+	private $total_state = array();
 
 	public $defaultDefines = array(
 		'STACKSIGHT_INCLUDE_LOGS' => false,
@@ -123,6 +123,17 @@ class WPBootstrap{
 										if(!defined('STACKSIGHT_INCLUDE_UPDATES')){
 											define('STACKSIGHT_INCLUDE_UPDATES', $option);
 										}
+										break;
+								}
+							}
+						}elseif($key == 'stacksight_state'){
+							foreach($config_section as $key => $option){
+								switch($key){
+									case 'hash_of_state':
+										define('STACKSIGHT_STATE_OF_HASH', $option);
+										break;
+									case 'date_of_set':
+										define('STACKSIGHT_DATE_OF_HASH_SET', $option);
 										break;
 								}
 							}

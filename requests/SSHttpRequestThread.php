@@ -1,7 +1,10 @@
 <?php
 
 class SSHttpRequestThread extends SSHttpRequest implements SShttpInterface {
-    public function sendRequest($data, $url = false){
+
+    public $type = 'threads';
+
+    public function sendRequest($data, $url = false, $id_handle = false){
         $opts = array(
             'http' => array(
                 'method'  => 'POST',

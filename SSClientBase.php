@@ -78,6 +78,7 @@ abstract class SSClientBase {
 			return $response;
 		} else{
 			$this->curl_obj[] = array(
+				'type' => 'events',
 				'data' => $data,
 				'url' => false
 			);
@@ -100,6 +101,7 @@ abstract class SSClientBase {
 			return $response;
 		} else{
 			$this->curl_obj[] = array(
+				'type' => 'logs',
 				'data' => $data,
 				'url' => false
 			);
@@ -151,6 +153,7 @@ abstract class SSClientBase {
 			return $response;
 		} else{
 			$this->curl_obj[] = array(
+				'type' => 'updates',
 				'data' => $data,
 				'url' => SSHttpRequest::UPDATE_URL
 			);
@@ -167,6 +170,7 @@ abstract class SSClientBase {
 			return $response;
 		} else{
 			$this->curl_obj[] = array(
+				'type' => 'health',
 				'data' => $data,
 				'url' => SSHttpRequest::HEALTH_URL
 			);
@@ -183,6 +187,7 @@ abstract class SSClientBase {
 			return $response;
 		} else{
 			$this->curl_obj[] = array(
+				'type' => 'inventory',
 				'data' => $data,
 				'url' => SSHttpRequest::INVENTORY_URL
 			);
@@ -192,7 +197,15 @@ abstract class SSClientBase {
 	public function sendMultiCURL(){
 		if(!empty($this->curl_obj)){
 			foreach($this->curl_obj as $object){
-				$this->request_multicurl->addObject($object['data'], $object['url']);
+				if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
+					$_SESSION['stacksight_debug'][$object['type']] = array();
+					$data = array(
+						'type' => $this->request_multicurl->type,
+						'data' => $object['data']
+					);
+					$_SESSION['stacksight_debug'][$object['type']]['data'][] = $data;
+				}
+				$this->request_multicurl->addObject($object['data'], $object['url'], $object['type']);
 			}
 			$this->request_multicurl->sendRequest();
 		}
