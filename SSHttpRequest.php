@@ -20,7 +20,8 @@ class SSHttpRequest {
 
     public function publishEvent($data) {
         if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
-            $_SESSION['stacksight_debug']['events'] = array();
+            if(!isset( $_SESSION['stacksight_debug']['events']))
+                $_SESSION['stacksight_debug']['events'] = array();
             $data_for_log = array(
                 'type' =>  $this->type,
                 'data' => $data
@@ -32,7 +33,8 @@ class SSHttpRequest {
 
     public function sendLog($data) {
         if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true){
-            $_SESSION['stacksight_debug']['logs'] = array();
+            if(!isset( $_SESSION['stacksight_debug']['logs']))
+                $_SESSION['stacksight_debug']['logs'] = array();
             $data_for_log = array(
                 'type' =>  $this->type,
                 'data' => $data
