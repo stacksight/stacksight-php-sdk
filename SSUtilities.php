@@ -45,7 +45,7 @@ class SSUtilities {
 	    // delete logfile if filesize more than $logfile_limit
 
 
-	    $logfile_limit = 1024000; // размер лог файла в килобайтах (102400 = 100 мб)
+	    $logfile_limit = 1024000; //(100 MB)
 	    if ((file_exists($log_file) && filesize($log_file) / 1024 > $logfile_limit) || (file_exists($log_file) && $refresh === true))
 			unlink($log_file);
 	    
