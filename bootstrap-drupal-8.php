@@ -66,6 +66,8 @@ class DrupalBootstrap
         } else{
             $this->ready = true;
         }
+
+        define('STACKSIGHT_PHP_SDK_INCLUDE', TRUE);
     }
 
     public function init(){
