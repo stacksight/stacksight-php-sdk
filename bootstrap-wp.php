@@ -274,7 +274,6 @@ class WPBootstrap{
 				if($this->_mysqli_support){
 					$result = mysqli_fetch_array($query, ($additional !== false) ? $additional : NULL);
 				} else{
-					print_r($query);
 					$result = mysql_fetch_array($query, ($additional !== false) ? $additional : NULL);
 				}
 				return $result;
