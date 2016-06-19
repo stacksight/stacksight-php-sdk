@@ -17,6 +17,7 @@ abstract class SSClientBase {
 
 	const PLATFORM_MEAN = 'mean';
 	const PLATFORM_DRUPAL = 'drupal';
+	const PLATFORM_SYMFONY_2 = 'symfony2';
 	const PLATFORM_WORDPRESS = 'wordpress';
 	const PLATFORM_METEOR = 'meteor';
 	const PLATFORM_NODEJS = 'nodejs';
