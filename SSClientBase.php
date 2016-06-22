@@ -56,6 +56,12 @@ abstract class SSClientBase {
 			case self::PLATFORM_PHP:
 				$this->_platform = self::PLATFORM_PHP;
 				break;
+			case self::PLATFORM_MAGENTO_2:
+				$this->_platform = self::PLATFORM_MAGENTO_2;
+				break;
+			case self::PLATFORM_SYMFONY_2:
+				$this->_platform = self::PLATFORM_SYMFONY_2;
+				break;
 			default:
 				$this->_platform = self::PLATFORM_MEAN;
 				break;
