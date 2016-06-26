@@ -12,6 +12,7 @@ require_once('SSUtilities.php');
 require_once('platforms/SSDrupalClient.php');
 
 global $ss_client;
+define('STACKSIGHT_INIT_START', TRUE);
 if(defined('STACKSIGHT_TOKEN')){
     if(defined('STACKSIGHT_APP_ID'))
         $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
@@ -22,5 +23,5 @@ if(defined('STACKSIGHT_TOKEN')){
     if(defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS === true){
         new SSLogsTracker($ss_client, $handle_errors, $handle_fatal_errors);
     }
-    define('STACKSIGHT_BOOTSTRAPED', TRUE);
+    define('STACKSIGHT_PHP_SDK_INCLUDE', TRUE);
 }

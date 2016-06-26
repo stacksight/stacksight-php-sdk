@@ -17,6 +17,8 @@ abstract class SSClientBase {
 
 	const PLATFORM_MEAN = 'mean';
 	const PLATFORM_DRUPAL = 'drupal';
+	const PLATFORM_SYMFONY_2 = 'symfony2';
+	const PLATFORM_MAGENTO_2 = 'magento2';
 	const PLATFORM_WORDPRESS = 'wordpress';
 	const PLATFORM_METEOR = 'meteor';
 	const PLATFORM_NODEJS = 'nodejs';
@@ -53,6 +55,12 @@ abstract class SSClientBase {
 				break;
 			case self::PLATFORM_PHP:
 				$this->_platform = self::PLATFORM_PHP;
+				break;
+			case self::PLATFORM_MAGENTO_2:
+				$this->_platform = self::PLATFORM_MAGENTO_2;
+				break;
+			case self::PLATFORM_SYMFONY_2:
+				$this->_platform = self::PLATFORM_SYMFONY_2;
 				break;
 			default:
 				$this->_platform = self::PLATFORM_MEAN;
@@ -216,7 +224,7 @@ abstract class SSClientBase {
 		if($this->_app_id){
 			$data['appId'] = $this->_app_id;
 		} else {
-			$data['domain'] = $_SERVER['HTTP_HOST'];
+			$data['domain'] = (isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME']: 'NOT_DETECT';
 			$data['platform'] = $this->_platform;
 		}
 

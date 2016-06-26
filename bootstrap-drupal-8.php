@@ -66,13 +66,15 @@ class DrupalBootstrap
         } else{
             $this->ready = true;
         }
+
+        define('STACKSIGHT_PHP_SDK_INCLUDE', TRUE);
     }
 
     public function init(){
         if ($this->ready == true) {
             if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_object){
-                    $option = (isset($option_object) && !empty($option_object)) ? $option_object : false;
+                    $option = (isset($option_object) && !empty($option_object)) ? (bool) $option_object : false;
                     switch($key){
                         case 'app_id':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {

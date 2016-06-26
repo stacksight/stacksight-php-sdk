@@ -29,6 +29,9 @@ class WPBootstrap{
 	private $connection;
 	private $total_state = array();
 
+	private $_mysqli_support = false;
+	private $total_db = null;
+
 	public $defaultDefines = array(
 		'STACKSIGHT_INCLUDE_LOGS' => false,
 		'STACKSIGHT_INCLUDE_HEALTH' => true,
@@ -45,12 +48,10 @@ class WPBootstrap{
 
 	public function __construct($defined_prefix){
 		if(defined('DB_NAME') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_HOST')){
-			if($this->connection = @mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)){
-				if($this->total_db = @mysql_select_db(DB_NAME, $this->connection)){
-					$this->setBlogId($defined_prefix);
-					$this->ready = true;
-				}
+			if (function_exists('mysqli_connect')){
+				$this->_mysqli_support = true;
 			}
+			$this->_initDB($defined_prefix);
 		}
 		if(file_exists(ABSPATH .'wp-content/plugins/aryo-activity-log/aryo-activity-log.php')){
 			define('STACKSIGHT_DEPENDENCY_AAL', true);
@@ -171,8 +172,8 @@ class WPBootstrap{
 		$results = array();
 		$where = 'option_name IN ("'.implode('","', $this->options).'")';
 		$sql = 'SELECT * FROM '.$this->table_prefix.'options WHERE '.$where;
-		if ($query =  mysql_query($sql)) {
-			while ($row = mysql_fetch_array($query, MYSQL_ASSOC)) {
+		if ($query = $this->_query($sql)) {
+			while ($row = $this->_result($query, 'fetch_array', (defined('MYSQLI_ASSOC') && $this->_mysqli_support) ? MYSQLI_ASSOC : MYSQL_ASSOC)) {
 				$results[$row['option_name']] = unserialize($row['option_value']);
 			}
 		}
@@ -202,13 +203,13 @@ class WPBootstrap{
 			$where = 'domain = "'.$dm_domain.'"';
 
 		$sql = "SELECT blog_id FROM ".$defined_prefix."blogs WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
-		if ($query =  mysql_query($sql)) {
-			if($blog_id = @mysql_result($query, 0)){
+		if ($query =  $this->_query($sql)) {
+			if($blog_id = $this->_result($query, 'result', 0)){
 				return $blog_id;
 			} else{
 				$sql = "SELECT blog_id FROM ".$defined_prefix."domain_mapping WHERE $where ORDER BY CHAR_LENGTH(domain) DESC LIMIT 1";
-				if ($query =  mysql_query($sql)) {
-					if($blog_id = @mysql_result($query, 0)){
+				if ($query = $this->_query($sql)) {
+					if($blog_id = $this->_result($query, 'result', 0)){
 						return $blog_id;
 					} else{
 						// Domain not found
@@ -225,6 +226,59 @@ class WPBootstrap{
 		if ( defined( 'SUBDOMAIN_INSTALL' ) || defined( 'VHOST' ) || defined( 'SUNRISE' ) )
 			return true;
 		return false;
+	}
+
+	private function _initDB($defined_prefix){
+		if($this->_mysqli_support){
+			if($this->connection = @mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD)){
+				if($this->total_db = @mysqli_select_db($this->connection, DB_NAME)){
+					$this->setBlogId($defined_prefix);
+					$this->ready = true;
+				}
+			}
+		} else{
+			if($this->connection = @mysql_connect(DB_HOST, DB_USER, DB_PASSWORD)){
+				if($this->total_db = @mysql_select_db(DB_NAME, $this->connection)){
+					$this->setBlogId($defined_prefix);
+					$this->ready = true;
+				}
+			}
+		}
+	}
+
+	private function _query($sql){
+		if($this->_mysqli_support){
+			$query = mysqli_query($this->connection, $sql);
+		} else{
+			$query = mysql_query($sql, $this->connection);
+		}
+		return $query;
+	}
+
+	private function _result($query, $type='result', $additional = false){
+		switch($type){
+			case 'result':
+				if($this->_mysqli_support){
+					$data = mysqli_fetch_array($query);
+					if($additional !== false){
+						$result = $data[$additional];
+					} else{
+						$result = array_shift(array_values($data));
+					}
+				} else{
+					$result = mysql_result($query, ($additional !== false) ? $additional : NULL);
+				}
+				return $result;
+				break;
+			case 'fetch_array':
+				if($this->_mysqli_support){
+					$result = mysqli_fetch_array($query, ($additional !== false) ? $additional : NULL);
+				} else{
+					$result = mysql_fetch_array($query, ($additional !== false) ? $additional : NULL);
+				}
+				return $result;
+				break;
+		}
 	}
 }
 
