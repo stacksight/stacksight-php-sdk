@@ -24,6 +24,8 @@ abstract class SSClientBase {
 	const PLATFORM_NODEJS = 'nodejs';
 	const PLATFORM_PHP = 'php';
 
+	const DOMAIN_NOT_DETECT = 'DOMAIN_NOT_DETECT';
+
 	private $curl_obj = array();
 
 	public $stacksight_bot_name = 'Stacksight BOT';
@@ -227,7 +229,13 @@ abstract class SSClientBase {
 			if(defined('STACKSIGHT_HTTP_HOST')){
 				$data['domain'] = STACKSIGHT_HTTP_HOST;
 			} else{
-				$data['domain'] = (isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME']: 'NOT_DETECT';
+				if(isset($_SERVER['HTTP_HOST'])){
+					$data['domain'] = $_SERVER['HTTP_HOST'];
+				} elseif(isset($_SERVER['SERVER_NAME'])){
+					$data['domain'] = $_SERVER['SERVER_NAME'];
+				} else{
+					$data['domain'] = self::DOMAIN_NOT_DETECT;
+				}
 			}
 			$data['platform'] = $this->_platform;
 		}
