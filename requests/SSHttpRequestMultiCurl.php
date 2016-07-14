@@ -39,15 +39,17 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
 
                 if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//                    die('DEV');
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
                     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
                     curl_setopt($ch, CURLOPT_HEADER, 1);
                 } else{
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+//                    die('NOT_DEV');
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 3);
                     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
-                    curl_setopt($ch, CURLOPT_HEADER, 0);
+                    curl_setopt($ch, CURLOPT_HEADER, false);
                 }
 
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -89,6 +91,7 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
             for ($i = 0; $i < count($handles); $i++) {
                 curl_multi_remove_handle($mh, $handles[$i]);
             }
+
             curl_multi_close($mh);
 
             if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
