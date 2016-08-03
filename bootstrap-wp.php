@@ -117,7 +117,11 @@ class WPBootstrap{
 										break;
 									case 'include_events':
 										if(!defined('STACKSIGHT_INCLUDE_EVENTS')){
-											define('STACKSIGHT_INCLUDE_EVENTS', $option);
+											if(STACKSIGHT_DEPENDENCY_AAL === false){
+												define('STACKSIGHT_INCLUDE_EVENTS', false);
+											} else{
+												define('STACKSIGHT_INCLUDE_EVENTS', $option);
+											}
 										}
 										break;
 									case 'include_updates':
