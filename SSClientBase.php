@@ -225,24 +225,23 @@ abstract class SSClientBase {
 
 		if($this->_app_id){
 			$data['appId'] = $this->_app_id;
-		} else {
-			if(defined('STACKSIGHT_HTTP_HOST')){
-				$data['domain'] = STACKSIGHT_HTTP_HOST;
-			} else{
-				if($host){
-					$data['domain'] = $host;
-				} else {
-					if(isset($_SERVER['HTTP_HOST'])){
-						$data['domain'] = $_SERVER['HTTP_HOST'];
-					} elseif(isset($_SERVER['SERVER_NAME'])){
-						$data['domain'] = $_SERVER['SERVER_NAME'];
-					} else{
-						$data['domain'] = self::DOMAIN_NOT_DETECT;
-					}
+		}
+		if(defined('STACKSIGHT_HTTP_HOST')){
+			$data['domain'] = STACKSIGHT_HTTP_HOST;
+		} else{
+			if($host){
+				$data['domain'] = $host;
+			} else {
+				if(isset($_SERVER['HTTP_HOST'])){
+					$data['domain'] = $_SERVER['HTTP_HOST'];
+				} elseif(isset($_SERVER['SERVER_NAME'])){
+					$data['domain'] = $_SERVER['SERVER_NAME'];
+				} else{
+					$data['domain'] = self::DOMAIN_NOT_DETECT;
 				}
 			}
-			$data['platform'] = $this->_platform;
 		}
+		$data['platform'] = $this->_platform;
 
 		if(getenv('PLATFORM_ENVIRONMENT')){
 			$data['group'] = self::GROUP_PLATFORM_SH;
