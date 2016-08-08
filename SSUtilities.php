@@ -27,7 +27,8 @@ class SSUtilities {
 	static function error_log($message, $level = 'info', $refresh = false, $to_file = false) {
 		if (!$message || (!defined('STACKSIGHT_DEBUG') || (defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG !== true))) return;
 	    if (is_array($message) || is_object($message)) $message = print_r($message, true);
-
+		$date = new Datetime();
+		$date_format = $date->format('d.m.Y H:i:s');
 		if($to_file === true){
 			$log_file = dirname(__FILE__).'/../'.$level.'.log';
 			// delete logfile if filesize more than $logfile_limit
@@ -37,9 +38,6 @@ class SSUtilities {
 				unlink($log_file);
 
 			// $date = new Datetime(null, new DateTimeZone('Europe/Minsk'));
-			$date = new Datetime();
-			$date_format = $date->format('d.m.Y H:i:s');
-
 			error_log($date_format .' '. $message."\n", 3, $log_file);
 		} else{
 			error_log($date_format .' '. $message."\n");

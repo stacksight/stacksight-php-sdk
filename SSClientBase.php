@@ -24,6 +24,8 @@ abstract class SSClientBase {
 	const PLATFORM_NODEJS = 'nodejs';
 	const PLATFORM_PHP = 'php';
 
+	const DOMAIN_NOT_DETECT = 'DOMAIN_NOT_DETECT';
+
 	private $curl_obj = array();
 
 	public $stacksight_bot_name = 'Stacksight BOT';
@@ -73,10 +75,10 @@ abstract class SSClientBase {
 		$this->request_thread = new SSHttpRequestThread();
 	}
 
-	public function publishEvent($data, $isMulticURL = false) {
+	public function publishEvent($data, $isMulticURL = false, $host = false) {
 		$data['index'] = 'events';
 		$data['eType'] = 'event';
-		$this->_setAppParams($data);
+		$this->_setAppParams($data, $host);
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 		if($isMulticURL == false) {
 			if (strlen(json_encode($data)) > $this->socket_limit)
@@ -93,13 +95,13 @@ abstract class SSClientBase {
 		}
 	}
 
-	public function sendLog($message, $level = 'log', $isMulticURL = false) {
+	public function sendLog($message, $level = 'log', $isMulticURL = false, $host = false) {
 		$data['index'] = 'logs';
 		$data['type'] = 'console';
 		$data['eType'] = 'log';
 		$data['method'] = $level;
 		$data['content'] = $message;
-		$this->_setAppParams($data);
+		$this->_setAppParams($data, $host);
 		if (!isset($data['created'])) $data['created'] = SSUtilities::timeJSFormat();
 		if($isMulticURL == false){
 			if (strlen(json_encode($data)) > $this->socket_limit)
@@ -151,8 +153,8 @@ abstract class SSClientBase {
 			$response = $this->request_socket->sendSlackNotify($data);
 	}
 
-	public function sendUpdates($data, $isMulticURL = false) {
-		$this->_setAppParams($data);
+	public function sendUpdates($data, $isMulticURL = false, $host = false) {
+		$this->_setAppParams($data, $host);
 		if($isMulticURL == false){
 			if (strlen(json_encode($data)) > $this->socket_limit)
 				$response = $this->request_curl->sendUpdates($data);
@@ -168,8 +170,8 @@ abstract class SSClientBase {
 		}
 	}
 
-	public function sendHealth($data, $isMulticURL = false) {
-		$this->_setAppParams($data);
+	public function sendHealth($data, $isMulticURL = false, $host = false) {
+		$this->_setAppParams($data, $host);
 		if($isMulticURL == false){
 			if (strlen(json_encode($data)) > $this->socket_limit)
 				$response = $this->request_curl->sendHealth($data);
@@ -185,8 +187,8 @@ abstract class SSClientBase {
 		}
 	}
 
-	public function sendInventory($data, $isMulticURL = false) {
-		$this->_setAppParams($data);
+	public function sendInventory($data, $isMulticURL = false, $host = false) {
+		$this->_setAppParams($data, $host);
 		if($isMulticURL == false){
 			if (strlen(json_encode($data)) > $this->socket_limit)
 				$response = $this->request_curl->sendInventory($data);
@@ -219,14 +221,27 @@ abstract class SSClientBase {
 		}
 	}
 
-	private function _setAppParams(&$data = array()){
+	private function _setAppParams(&$data = array(), $host = false){
 
 		if($this->_app_id){
 			$data['appId'] = $this->_app_id;
-		} else {
-			$data['domain'] = (isset($_SERVER['HTTP_HOST'])) ? $_SERVER['HTTP_HOST'] : (isset($_SERVER['SERVER_NAME'])) ? $_SERVER['SERVER_NAME']: 'NOT_DETECT';
-			$data['platform'] = $this->_platform;
 		}
+		if(defined('STACKSIGHT_HTTP_HOST')){
+			$data['domain'] = STACKSIGHT_HTTP_HOST;
+		} else{
+			if($host){
+				$data['domain'] = $host;
+			} else {
+				if(isset($_SERVER['HTTP_HOST'])){
+					$data['domain'] = $_SERVER['HTTP_HOST'];
+				} elseif(isset($_SERVER['SERVER_NAME'])){
+					$data['domain'] = $_SERVER['SERVER_NAME'];
+				} else{
+					$data['domain'] = self::DOMAIN_NOT_DETECT;
+				}
+			}
+		}
+		$data['platform'] = $this->_platform;
 
 		if(getenv('PLATFORM_ENVIRONMENT')){
 			$data['group'] = self::GROUP_PLATFORM_SH;
