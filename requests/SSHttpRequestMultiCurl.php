@@ -39,13 +39,11 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
                 curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
 
                 if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
-//                    die('DEV');
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 10);
                     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
                     curl_setopt($ch, CURLOPT_HEADER, true);
                 } else{
-//                    die('NOT_DEV');
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
                     curl_setopt($ch, CURLOPT_TIMEOUT, 3);
                     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3);
