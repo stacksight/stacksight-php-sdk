@@ -13,6 +13,9 @@ require_once('platforms/SSDrupalClient.php');
 
 global $ss_client;
 define('STACKSIGHT_INIT_START', TRUE);
+
+define('DOCS_URL', '#');
+
 if(defined('STACKSIGHT_TOKEN')){
     if(defined('STACKSIGHT_APP_ID'))
         $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);

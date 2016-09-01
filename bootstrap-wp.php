@@ -11,9 +11,9 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSWordpressClient.php');
 
-if ( ! function_exists( 'get_plugins' ) ) {
-	require_once ABSPATH . 'wp-admin/includes/plugin.php';
-}
+1
+
+define('DOCS_URL', '#');
 
 class WPBootstrap{
 

@@ -11,6 +11,8 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSDrupalClient.php');
 
+define('DOCS_URL', '#');
+
 use Drupal\Core\Database\Database;
 
 global $ss_client;

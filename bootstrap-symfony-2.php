@@ -13,6 +13,8 @@ namespace {
 
     global $ss_client;
 
+    define('DOCS_URL', '#');
+
     class SymfonyBootstrap{
         protected $ss_client;
 

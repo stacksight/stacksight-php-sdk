@@ -18,6 +18,8 @@ include_once DRUPAL_ROOT . '/includes/database/sqlite/database.inc';
 include_once DRUPAL_ROOT . '/includes/database/mysql/database.inc';
 include_once DRUPAL_ROOT . '/includes/database/pgsql/database.inc';
 
+define('DOCS_URL', '#');
+
 global $ss_client;
 
 class DrupalBootstrap

@@ -13,6 +13,8 @@ namespace {
 
     global $ss_client;
 
+    define('DOCS_URL', '#');
+
     class Magento2Bootstrap{
         protected $ss_client;
 
