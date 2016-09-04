@@ -11,8 +11,6 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSWordpressClient.php');
 
-1
-
 define('DOCS_URL', '#');
 
 class WPBootstrap{
