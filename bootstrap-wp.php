@@ -11,7 +11,7 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSWordpressClient.php');
 
-define('DOCS_URL', '#');
+define('DOCS_URL', 'http://stacksight.io/docs/#wordpress-installation');
 
 class WPBootstrap{
 
