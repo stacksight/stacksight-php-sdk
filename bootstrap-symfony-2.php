@@ -21,11 +21,11 @@ namespace {
         public function __construct(){
             global $ss_client;
             $this->ss_client = & $ss_client;
-            if(defined('STACKSIGHT_TOKEN')){
-                if(defined('STACKSIGHT_APP_ID'))
-                    $this->ss_client = new \SSSymfony2Client(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_SYMFONY_2, STACKSIGHT_APP_ID);
+            if(defined('STACKSIGHT_PRIVATE_KEY')){
+                if(defined('STACKSIGHT_PUBLIC_KEY'))
+                    $this->ss_client = new \SSSymfony2Client(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_SYMFONY_2, STACKSIGHT_PUBLIC_KEY);
                 else
-                    $this->ss_client = new \SSSymfony2Client(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_SYMFONY_2);
+                    $this->ss_client = new \SSSymfony2Client(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_SYMFONY_2);
                 
                 define('STACKSIGHT_BOOTSTRAPED', TRUE);
             }

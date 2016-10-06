@@ -72,15 +72,15 @@ class WPBootstrap{
 								switch($key){
 									case '_id':
 										if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-											if (!defined('STACKSIGHT_APP_ID') && $option) {
-												define('STACKSIGHT_APP_ID', $option);
+											if (!defined('STACKSIGHT_PUBLIC_KEY') && $option) {
+												define('STACKSIGHT_PUBLIC_KEY', $option);
 											}
 										}
 										break;
 									case 'token':
 										if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-											if (!defined('STACKSIGHT_TOKEN') && $option) {
-												define('STACKSIGHT_TOKEN', $option);
+											if (!defined('STACKSIGHT_PRIVATE_KEY') && $option) {
+												define('STACKSIGHT_PRIVATE_KEY', $option);
 											}
 										}
 										break;
@@ -152,15 +152,15 @@ class WPBootstrap{
 				}
 			}
 
-			if(defined('STACKSIGHT_TOKEN')){
-				$app_id = (defined('STACKSIGHT_APP_ID')) ? STACKSIGHT_APP_ID : false;
+			if(defined('STACKSIGHT_PRIVATE_KEY')){
+				$app_id = (defined('STACKSIGHT_PUBLIC_KEY')) ? STACKSIGHT_PUBLIC_KEY : false;
 				$group = (defined('STACKSIGHT_GROUP')) ? STACKSIGHT_GROUP : false;
 //				Enable slack integration
 				if(defined('STACKSIGHT_INCOMING_SLACK_URL') && (defined('STACKSIGHT_SLACK_NOTIFY_LOGS') && STACKSIGHT_SLACK_NOTIFY_LOGS == true) && defined('STACKSIGHT_SLACK_NOTIFY_LOGS_OPTIONS')){
 					define('STACKSIGHT_SEND_TO_SLACK_EVENTS', STACKSIGHT_SLACK_NOTIFY_LOGS_OPTIONS);
 				}
 
-				$ss_client = new SSWordpressClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_WORDPRESS, $app_id, $group);
+				$ss_client = new SSWordpressClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_WORDPRESS, $app_id, $group);
 				if(defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS === true) {
 					new SSLogsTracker($ss_client);
 				}

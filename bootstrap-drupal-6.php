@@ -16,11 +16,11 @@ define('STACKSIGHT_INIT_START', TRUE);
 
 define('DOCS_URL', '#');
 
-if(defined('STACKSIGHT_TOKEN')){
-    if(defined('STACKSIGHT_APP_ID'))
-        $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
+if(defined('STACKSIGHT_PRIVATE_KEY')){
+    if(defined('STACKSIGHT_PUBLIC_KEY'))
+        $ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_PUBLIC_KEY);
     else
-        $ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL);
+        $ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL);
     $handle_errors = FALSE;
     $handle_fatal_errors = TRUE;
     if(defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS === true){
