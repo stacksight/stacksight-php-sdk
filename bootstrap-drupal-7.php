@@ -162,5 +162,7 @@ class DrupalBootstrap
     }
 }
 
-$wp_stacksight = new DrupalBootstrap($databases);
-$wp_stacksight->init();
+if ( defined('STACKSIGHT_TOKEN') ) {
+    $drupal_stacksight = new DrupalBootstrap($databases);
+    $drupal_stacksight->init();
+}
