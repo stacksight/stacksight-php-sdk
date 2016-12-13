@@ -62,7 +62,8 @@ class WPBootstrap{
 
 	public function init(){
 		if($this->ready == true){
-			$defines_from_db = $this->defineVars();
+            define('STACKSIGHT_SETTINGS_IN_DB', true);
+            $defines_from_db = $this->defineVars();
 			if(is_array($defines_from_db) && !empty($defines_from_db)){
 				foreach($defines_from_db as $key => $config_section){
 					if(is_array($config_section) && !empty($config_section)){
