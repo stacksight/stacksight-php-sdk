@@ -13,7 +13,7 @@ namespace {
 
     global $ss_client;
 
-    define('DOCS_URL', '#');
+    define('DOCS_URL', 'http://stacksight.io/docs/#wordpress-installation');
 
     class Magento2Bootstrap{
         protected $ss_client;
