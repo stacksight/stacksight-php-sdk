@@ -18,7 +18,7 @@ include_once DRUPAL_ROOT . '/includes/database/sqlite/database.inc';
 include_once DRUPAL_ROOT . '/includes/database/mysql/database.inc';
 include_once DRUPAL_ROOT . '/includes/database/pgsql/database.inc';
 
-define('DOCS_URL', '#');
+define('DOCS_URL', 'http://stacksight.io/docs/#wordpress-installation');
 
 global $ss_client;
 
@@ -82,11 +82,12 @@ class DrupalBootstrap
             $this->ready = true;
         }
 
-        define('STACKSIGHT_PHP_SDK_INCLUDE', TRUE);
+        define('STACKSIGHT_PHP_SDK_INCLUDE', true);
     }
 
     public function init(){
         if ($this->ready == true) {
+            define('STACKSIGHT_SETTINGS_IN_DB', true);
             if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_obkect){
                     $option = (isset($option_obkect['value']) && !empty($option_obkect['value'])) ? unserialize($option_obkect['value']) : false;
@@ -154,11 +155,11 @@ class DrupalBootstrap
                     $this->ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL);
 
                 $handle_errors = FALSE;
-                $handle_fatal_errors = TRUE;
+                $handle_fatal_errors = true;
                 if(defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS == true){
                     new SSLogsTracker($this->ss_client, $handle_errors, $handle_fatal_errors);
                 }
-                define('STACKSIGHT_BOOTSTRAPED', TRUE);
+                define('STACKSIGHT_BOOTSTRAPED', true);
             }
         }
     }
