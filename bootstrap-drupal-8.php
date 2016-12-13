@@ -11,6 +11,8 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSDrupalClient.php');
 
+define('DOCS_URL', 'http://stacksight.io/docs/#wordpress-installation');
+
 use Drupal\Core\Database\Database;
 
 global $ss_client;
@@ -72,21 +74,22 @@ class DrupalBootstrap
 
     public function init(){
         if ($this->ready == true) {
+            define('STACKSIGHT_SETTINGS_IN_DB', true);
             if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_object){
                     $option = (isset($option_object) && !empty($option_object)) ? (bool) $option_object : false;
                     switch($key){
                         case 'app_id':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-                                if (!defined('STACKSIGHT_APP_ID') && $option) {
-                                    define('STACKSIGHT_APP_ID', $option);
+                                if (!defined('STACKSIGHT_PUBLIC_KEY') && $option) {
+                                    define('STACKSIGHT_PUBLIC_KEY', $option);
                                 }
                             }
                             break;
                         case 'token':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-                                if (!defined('STACKSIGHT_TOKEN') && $option) {
-                                    define('STACKSIGHT_TOKEN', $option);
+                                if (!defined('STACKSIGHT_PRIVATE_KEY') && $option) {
+                                    define('STACKSIGHT_PRIVATE_KEY', $option);
                                 }
                             }
                             break;
@@ -133,11 +136,11 @@ class DrupalBootstrap
                 }
             }
             
-            if(defined('STACKSIGHT_TOKEN')){
-                if(defined('STACKSIGHT_APP_ID'))
-                    $this->ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
+            if(defined('STACKSIGHT_PRIVATE_KEY')){
+                if(defined('STACKSIGHT_PUBLIC_KEY'))
+                    $this->ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_PUBLIC_KEY);
                 else
-                    $this->ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL);
+                    $this->ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL);
 
                 $handle_errors = FALSE;
                 $handle_fatal_errors = TRUE;
