@@ -18,7 +18,7 @@ include_once DRUPAL_ROOT . '/includes/database/sqlite/database.inc';
 include_once DRUPAL_ROOT . '/includes/database/mysql/database.inc';
 include_once DRUPAL_ROOT . '/includes/database/pgsql/database.inc';
 
-define('DOCS_URL', '#');
+define('DOCS_URL', 'http://stacksight.io/docs/#drupal-installation');
 
 global $ss_client;
 
@@ -87,6 +87,7 @@ class DrupalBootstrap
 
     public function init(){
         if ($this->ready == true) {
+            define('STACKSIGHT_SETTINGS_IN_DB', true);
             if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_obkect){
                     $option = (isset($option_obkect['value']) && !empty($option_obkect['value'])) ? unserialize($option_obkect['value']) : false;

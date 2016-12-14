@@ -14,7 +14,7 @@ require_once('platforms/SSDrupalClient.php');
 global $ss_client;
 define('STACKSIGHT_INIT_START', TRUE);
 
-define('DOCS_URL', '#');
+define('DOCS_URL', 'http://stacksight.io/docs/#drupal-installation');
 
 if(defined('STACKSIGHT_TOKEN')){
     if(defined('STACKSIGHT_APP_ID'))

@@ -13,7 +13,7 @@ namespace {
 
     global $ss_client;
 
-    define('DOCS_URL', '#');
+    define('DOCS_URL', 'http://stacksight.io/docs/#getting-started');
 
     class SymfonyBootstrap{
         protected $ss_client;

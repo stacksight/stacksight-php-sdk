@@ -11,7 +11,7 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSDrupalClient.php');
 
-define('DOCS_URL', '#');
+define('DOCS_URL', 'http://stacksight.io/docs/#drupal-installation');
 
 use Drupal\Core\Database\Database;
 
@@ -74,6 +74,7 @@ class DrupalBootstrap
 
     public function init(){
         if ($this->ready == true) {
+            define('STACKSIGHT_SETTINGS_IN_DB', true);
             if(!empty($this->data_options) && is_array($this->data_options)){
                 foreach($this->data_options as $key => $option_object){
                     $option = (isset($option_object) && !empty($option_object)) ? (bool) $option_object : false;
