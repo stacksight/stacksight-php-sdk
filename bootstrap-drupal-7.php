@@ -18,7 +18,7 @@ include_once DRUPAL_ROOT . '/includes/database/sqlite/database.inc';
 include_once DRUPAL_ROOT . '/includes/database/mysql/database.inc';
 include_once DRUPAL_ROOT . '/includes/database/pgsql/database.inc';
 
-define('DOCS_URL', 'http://stacksight.io/docs/#wordpress-installation');
+define('DOCS_URL', 'http://stacksight.io/docs/#drupal-installation');
 
 global $ss_client;
 
@@ -82,7 +82,7 @@ class DrupalBootstrap
             $this->ready = true;
         }
 
-        define('STACKSIGHT_PHP_SDK_INCLUDE', true);
+        define('STACKSIGHT_PHP_SDK_INCLUDE', TRUE);
     }
 
     public function init(){
@@ -94,15 +94,15 @@ class DrupalBootstrap
                     switch($key){
                         case 'stacksight_app_id':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
-                                if (!defined('STACKSIGHT_PUBLIC_KEY') && $option) {
-                                    define('STACKSIGHT_PUBLIC_KEY', $option);
+                                if (!defined('STACKSIGHT_APP_ID') && $option) {
+                                    define('STACKSIGHT_APP_ID', $option);
                                 }
                             }
                             break;
                         case 'stacksight_token':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
-                                if (!defined('STACKSIGHT_PRIVATE_KEY') && $option) {
-                                    define('STACKSIGHT_PRIVATE_KEY', $option);
+                                if (!defined('STACKSIGHT_TOKEN') && $option) {
+                                    define('STACKSIGHT_TOKEN', $option);
                                 }
                             }
                             break;
@@ -148,18 +148,18 @@ class DrupalBootstrap
                 }
             }
 
-            if(defined('STACKSIGHT_PRIVATE_KEY')){
-                if(defined('STACKSIGHT_PUBLIC_KEY'))
-                    $this->ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_PUBLIC_KEY);
+            if(defined('STACKSIGHT_TOKEN')){
+                if(defined('STACKSIGHT_APP_ID'))
+                    $this->ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
                 else
-                    $this->ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL);
+                    $this->ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL);
 
                 $handle_errors = FALSE;
-                $handle_fatal_errors = true;
+                $handle_fatal_errors = TRUE;
                 if(defined('STACKSIGHT_INCLUDE_LOGS') && STACKSIGHT_INCLUDE_LOGS == true){
                     new SSLogsTracker($this->ss_client, $handle_errors, $handle_fatal_errors);
                 }
-                define('STACKSIGHT_BOOTSTRAPED', true);
+                define('STACKSIGHT_BOOTSTRAPED', TRUE);
             }
         }
     }

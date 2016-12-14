@@ -11,7 +11,7 @@ require_once('SSLogsTracker.php');
 require_once('SSUtilities.php');
 require_once('platforms/SSDrupalClient.php');
 
-define('DOCS_URL', 'http://stacksight.io/docs/#wordpress-installation');
+define('DOCS_URL', 'http://stacksight.io/docs/#drupal-installation');
 
 use Drupal\Core\Database\Database;
 
@@ -81,15 +81,15 @@ class DrupalBootstrap
                     switch($key){
                         case 'app_id':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-                                if (!defined('STACKSIGHT_PUBLIC_KEY') && $option) {
-                                    define('STACKSIGHT_PUBLIC_KEY', $option);
+                                if (!defined('STACKSIGHT_APP_ID') && $option) {
+                                    define('STACKSIGHT_APP_ID', $option);
                                 }
                             }
                             break;
                         case 'token':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-                                if (!defined('STACKSIGHT_PRIVATE_KEY') && $option) {
-                                    define('STACKSIGHT_PRIVATE_KEY', $option);
+                                if (!defined('STACKSIGHT_TOKEN') && $option) {
+                                    define('STACKSIGHT_TOKEN', $option);
                                 }
                             }
                             break;
@@ -136,11 +136,11 @@ class DrupalBootstrap
                 }
             }
             
-            if(defined('STACKSIGHT_PRIVATE_KEY')){
-                if(defined('STACKSIGHT_PUBLIC_KEY'))
-                    $this->ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_PUBLIC_KEY);
+            if(defined('STACKSIGHT_TOKEN')){
+                if(defined('STACKSIGHT_APP_ID'))
+                    $this->ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
                 else
-                    $this->ss_client = new SSDrupalClient(STACKSIGHT_PRIVATE_KEY, SSClientBase::PLATFORM_DRUPAL);
+                    $this->ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL);
 
                 $handle_errors = FALSE;
                 $handle_fatal_errors = TRUE;
