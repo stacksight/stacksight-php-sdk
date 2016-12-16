@@ -3,7 +3,7 @@ class SSHttpRequest {
 
     public $protocol = 'ssl';
     public $hprotocol = 'https';
-    public $host = 'api.stage.stacksight.io';
+    public $host = 'api.stacksight.io';
     public $api_path = 'v0.1/index';
     public $port = 443;
 
