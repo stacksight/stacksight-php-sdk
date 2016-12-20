@@ -106,13 +106,6 @@ class DrupalBootstrap
                                 }
                             }
                             break;
-                        case 'stacksight_group':
-                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
-                                if (!defined('STACKSIGHT_GROUP') && $option) {
-                                    define('STACKSIGHT_GROUP', $option);
-                                }
-                            }
-                            break;
                         case 'stacksight_include_logs':
                             if (!defined('STACKSIGHT_INCLUDE_LOGS') && $option) {
                                 define('STACKSIGHT_INCLUDE_LOGS', $option);

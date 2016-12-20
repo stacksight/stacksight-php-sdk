@@ -62,7 +62,7 @@ class DrupalBootstrap
         }
 
         if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true){
-            if (isset($this->data_options['token'])) {
+            if (isset($this->data_options['token']) && isset($this->data_options['app_id'])) {
                 $this->ready = true;
             }
         } else{
@@ -81,22 +81,15 @@ class DrupalBootstrap
                     switch($key){
                         case 'app_id':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-                                if (!defined('STACKSIGHT_APP_ID') && $option) {
-                                    define('STACKSIGHT_APP_ID', $option);
+                                if (!defined('STACKSIGHT_APP_ID') && $option_object) {
+                                    define('STACKSIGHT_APP_ID', $option_object);
                                 }
                             }
                             break;
                         case 'token':
                             if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-                                if (!defined('STACKSIGHT_TOKEN') && $option) {
-                                    define('STACKSIGHT_TOKEN', $option);
-                                }
-                            }
-                            break;
-                        case 'group':
-                            if(defined('STACKSIGHT_SETTINGS_IN_DB') && STACKSIGHT_SETTINGS_IN_DB === true) {
-                                if (!defined('STACKSIGHT_GROUP') && $option) {
-                                    define('STACKSIGHT_GROUP', $option);
+                                if (!defined('STACKSIGHT_TOKEN') && $option_object) {
+                                    define('STACKSIGHT_TOKEN', $option_object);
                                 }
                             }
                             break;
@@ -135,7 +128,7 @@ class DrupalBootstrap
                     define($key, $default_define);
                 }
             }
-            
+
             if(defined('STACKSIGHT_TOKEN')){
                 if(defined('STACKSIGHT_APP_ID'))
                     $this->ss_client = new SSDrupalClient(STACKSIGHT_TOKEN, SSClientBase::PLATFORM_DRUPAL, STACKSIGHT_APP_ID);
