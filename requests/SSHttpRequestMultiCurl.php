@@ -25,6 +25,7 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
         if (!empty($this->objects)) {
             $mh = curl_multi_init();
             $handles = array();
+            $unworked = array();
             foreach ($this->objects as $object) {
                 $data = $object['data'];
                 $url = $object['url'];
@@ -57,11 +58,16 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
 
                 $this->associate[(int) $ch] = $object['type'];
                 curl_multi_add_handle($mh, $ch);
+
+                $id_handle = (int) $ch;
+                $associate_handlers[$id_handle] = $object;
+
                 $handles[] = $ch;
             }
 
             $active = null;
             $curl_info = array();
+            $has_loss_stacks = false;
             do {
                 $mrc = curl_multi_exec($mh, $active);
             } while ($mrc == CURLM_CALL_MULTI_PERFORM);
@@ -81,9 +87,15 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
                                     $curl_info[$this->associate[$id_handle]] = $curl_handle_info;
                                 }
                                 $curl_info[$this->associate[$id_handle]]['response'] = curl_multi_getcontent($info['handle']);
+                            } else{
+                                $hid_for_unworked = (int) $mh;
+                                $unworked[] = $associate_handlers[$hid_for_unworked];
                             }
                         }
                     } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+                } else{
+                    $hid_for_unworked = (int) $mh;
+                    $unworked[] = $associate_handlers[$hid_for_unworked];
                 }
             }
             for ($i = 0; $i < count($handles); $i++) {
@@ -92,12 +104,16 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
 
             curl_multi_close($mh);
 
+            if($unworked){
+                $this->objects = $unworked;
+                $this->sendRequest();
+            }
+
             if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
                 foreach($curl_info as $key => $info){
                     $_SESSION['stacksight_debug'][$key]['request_info'] = $info;
                 }
             }
-
         }
     }
 }
