@@ -39,7 +39,7 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
     }
 
     private function closeSocket(){
-        if($this->_state_socket === true && $this->_socket)
+        if($this->_state_socket === true && $this->_socket && is_resource($this->_socket))
             fclose($this->_socket);
     }
 
@@ -122,7 +122,7 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
                 $_SESSION['stacksight_debug'][$this->id_handle]['request_info'][] = array(
                     'error' => true,
                     'data' => $message,
-                    'meta' => ($this->_socket) ? stream_get_meta_data($this->_socket) : false
+                    'meta' => ($this->_socket && is_resource($this->_socket)) ? stream_get_meta_data($this->_socket) : false
                 );
             } else{
                 if($data = fread($this->_socket, 4096)){
@@ -133,7 +133,7 @@ class SSHttpRequestSockets extends SSHttpRequest implements SShttpInterface {
                 $_SESSION['stacksight_debug'][$this->id_handle]['request_info'][] = array(
                     'error' => false,
                     'data' => $sended_data,
-                    'meta' => ($this->_socket) ? stream_get_meta_data($this->_socket) : false
+                    'meta' => ($this->_socket && is_resource($this->_socket)) ? stream_get_meta_data($this->_socket) : false
                 );
             }
         }
