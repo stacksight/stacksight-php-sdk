@@ -96,16 +96,20 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
                                 }
                                 $curl_info[$this->associate[$id_handle]]['response'] = curl_multi_getcontent($info['handle']);
                             } else{
-//                                $hid_for_unworked = (int) $mh;
-//                                var_dump($hid_for_unworked);
-//                                $unworked[] = $associate_handlers[$hid_for_unworked];
+                                $hid_for_unworked = (int) $mh;
+                                var_dump($hid_for_unworked);
+                                if(isset($associate_handlers[$hid_for_unworked]) && !empty($associate_handlers[$hid_for_unworked])){
+                                    $unworked[] = $associate_handlers[$hid_for_unworked];
+                                }
                             }
                         }
                     } while ($mrc == CURLM_CALL_MULTI_PERFORM);
                 } else{
                     $hid_for_unworked = (int) $mh;
                     var_dump($hid_for_unworked);
-                    $unworked[] = $associate_handlers[$hid_for_unworked];
+                    if(isset($associate_handlers[$hid_for_unworked]) && !empty($associate_handlers[$hid_for_unworked])){
+                        $unworked[] = $associate_handlers[$hid_for_unworked];
+                    }
                 }
             }
             for ($i = 0; $i < count($handles); $i++) {
