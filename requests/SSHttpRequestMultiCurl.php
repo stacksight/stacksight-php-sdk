@@ -9,6 +9,8 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
 
     private $associate = array();
 
+    private $max_retry = 3;
+
     public function addObject($data, $url, $type)
     {
         if (!empty($data)) {
@@ -20,8 +22,12 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
         }
     }
 
-    public function sendRequest($data = false, $url = false, $id_handle = false)
+    public function sendRequest($data = false, $url = false, $id_handle = false, $retry = 0)
     {
+        if($retry > $this->max_retry) {
+            return false;
+        }
+
         if (!empty($this->objects)) {
             $mh = curl_multi_init();
             $handles = array();
@@ -111,7 +117,7 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
             if($unworked){
                 print_r($unworked);
                 $this->objects = $unworked;
-                $this->sendRequest();
+                $this->sendRequest(false, false, false, ++$retry);
             }
 
             if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
