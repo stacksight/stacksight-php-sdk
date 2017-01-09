@@ -26,21 +26,16 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
 
     public function sendRequest($data = false, $url = false, $id_handle = false, $retry = 0)
     {
-        print_r("<br><br>RETRY #$retry <br><br>\r\n");
         if($retry > $this->max_retry) {
             return false;
         }
 
         if (!empty($this->objects)) {
-            echo "Lets start<br>\r\n";
-
             $mh = curl_multi_init();
             $handles = array();
             $unworked = array();
             $associate_handlers = array();
             $associate_handlers_info = array();
-
-            print_r("COUNT OF REQUESTS: ".sizeof($this->objects)." <br>\r\n");
 
             foreach ($this->objects as $object) {
                 $data = $object['data'];
