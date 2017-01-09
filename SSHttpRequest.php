@@ -92,6 +92,6 @@ class SSHttpRequest {
     }
 
     public function getInitIdsUrl($system){
-        return $this->hprotocol.'://'.$this->host.'/'.$this->api_path.'/'.INIT_IDS_URL.'/'.$system;
+        return $this->hprotocol.'://'.$this->host.'/'.$this->api_path.'/'.self::INIT_IDS_URL.'/'.$system;
     }
 }
