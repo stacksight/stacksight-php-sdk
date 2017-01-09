@@ -123,7 +123,7 @@ class SSHttpRequestMultiCurl extends SSHttpRequest implements SShttpInterface
                     throw new Exception("Error executing multi request, exit code = " . $code);
                 }
             }
-            
+
             if((defined('STACKSIGHT_DEBUG') && STACKSIGHT_DEBUG === true) && defined('STACKSIGHT_DEBUG_MODE') && STACKSIGHT_DEBUG_MODE === true) {
                 foreach($curl_info as $key => $info){
                     $_SESSION['stacksight_debug'][$key]['request_info'] = $info;
