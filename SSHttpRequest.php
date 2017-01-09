@@ -14,6 +14,7 @@ class SSHttpRequest {
     const INVENTORY_URL = '/inventory/inventory';
     const LOGS_URL = '/logs/log';
 
+    public $api_path_additional = 'v0.1';
     const INIT_IDS_URL = '/stacks/register';
 
     public function __construct(){
@@ -92,6 +93,6 @@ class SSHttpRequest {
     }
 
     public function getInitIdsUrl($system){
-        return $this->hprotocol.'://'.$this->host.'/'.$this->api_path.self::INIT_IDS_URL.'/'.$system;
+        return $this->hprotocol.'://'.$this->host.'/'.$this->api_path_additional.self::INIT_IDS_URL.'/'.$system;
     }
 }
