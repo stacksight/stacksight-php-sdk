@@ -14,6 +14,8 @@ class SSHttpRequest {
     const INVENTORY_URL = '/inventory/inventory';
     const LOGS_URL = '/logs/log';
 
+    const INIT_IDS_URL = '/stacks/register';
+
     public function __construct(){
         if(!defined('INDEX_ENDPOINT_01'))
             define('INDEX_ENDPOINT_01', $this->hprotocol.'://'.$this->host.'/'.$this->api_path);
@@ -87,5 +89,9 @@ class SSHttpRequest {
         $this->api_path = ltrim($incoming_url['path'], '/');
         $this->createSocket(true);
         $this->sendRequest($data, false);
+    }
+
+    public function getInitIdsUrl($system){
+        return $this->hprotocol.'://'.$this->host.'/'.$this->api_path.'/'.INIT_IDS_URL.'/'.$system;
     }
 }
