@@ -223,9 +223,14 @@ abstract class SSClientBase {
 
 	private function _setAppParams(&$data = array(), $host = false){
 
-		if($this->_app_id){
+		if($this->_app_id && (!isset($data['appId']) || empty($data['appId']))){
 			$data['appId'] = $this->_app_id;
 		}
+
+        if(!isset($data['token']) || empty($data['token'])){
+            $data['token'] = $this->token;
+        }
+
 		if(defined('STACKSIGHT_HTTP_HOST')){
 			$data['domain'] = STACKSIGHT_HTTP_HOST;
 		} else{
@@ -254,8 +259,6 @@ abstract class SSClientBase {
 		if($this->_group){
 			$data['group'] = $this->_group;
 		}
-
-		$data['token'] = $this->token;
 	}
 
 }

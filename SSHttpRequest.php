@@ -3,6 +3,7 @@ class SSHttpRequest {
 
     public $protocol = 'ssl';
     public $hprotocol = 'https';
+//    public $host = 'api.stage.stacksight.io';
     public $host = 'api.stacksight.io';
     public $api_path = 'v0.1/index';
     public $port = 443;
@@ -12,6 +13,9 @@ class SSHttpRequest {
     const HEALTH_URL = '/health/health';
     const INVENTORY_URL = '/inventory/inventory';
     const LOGS_URL = '/logs/log';
+
+    public $api_path_additional = 'v0.1';
+    const INIT_IDS_URL = '/stacks/register';
 
     public function __construct(){
         if(!defined('INDEX_ENDPOINT_01'))
@@ -86,5 +90,9 @@ class SSHttpRequest {
         $this->api_path = ltrim($incoming_url['path'], '/');
         $this->createSocket(true);
         $this->sendRequest($data, false);
+    }
+
+    public function getInitIdsUrl($system){
+        return $this->hprotocol.'://'.$this->host.'/'.$this->api_path_additional.self::INIT_IDS_URL.'/'.$system;
     }
 }
